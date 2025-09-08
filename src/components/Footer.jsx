@@ -16,7 +16,11 @@ export default function Footer() {
       <div className="flex flex-col lg:flex-row justify-between items-center gap-4 max-w-7xl mx-auto">
         {/* Logo + Brand */}
         <div className="flex items-center gap-2">
-         
+         <img
+  className="h-8 lg:h-9 drop-shadow-md"
+  src="/logo1.png"
+  alt="FixMyCity Logo"
+/>
           <h2 className="font-bold text-lg tracking-wide bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
             FixMyCity
           </h2>
