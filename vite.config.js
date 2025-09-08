@@ -6,24 +6,17 @@ import { VitePWA } from "vite-plugin-pwa";
 const manifestForPlugin = {
   registerType: "prompt",
   includeAssets: [
-    "logo.png",
-    "logo.png",
-    "maskable_iconx48.png",
-    "maskable_iconx72.png",
-    "maskable_iconx96.png",
-    "maskable_iconx128.png",
-    "maskable_iconx192.png",
-    "maskable_iconx384.png",
-    "maskable_iconx512.png",
-    "maskable_icon.png",
+    "favicon.png",
+    "logo1.png",
+  
   ],
   manifest: {
-    name: "MobilEASE - Mobile Efficient Assistance for Traffic",
-    short_name: "MobilEASE",
-    description: "Application to report traffic issues around you",
+    name: "FixMyCity",
+    short_name: "FixMyCity",
+    description: "Application to report Civic issues around you",
     icons: [
       {
-        src: "/logo.png",
+        src: "/favicon.png",
         sizes: "512x512",
         type: "image/png",
       },

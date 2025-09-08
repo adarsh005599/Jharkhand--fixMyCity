@@ -4,34 +4,35 @@ import RegisterAccount from "../components/RegisterAccount";
 import { auth } from "../utils/Firebase";
 import { isOfficial } from "../utils/FirebaseFunctions";
 import TrafficArt from "/src/assets/traffic-art.png";
-import Navbar from "/src/components/Navbar";
+
 const HomePage = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user && !isOfficial(user.uid)) {
-        navigate("/citizen-dashboard");
-      } else if (user && isOfficial(user.uid)) {
-        navigate("/official-dashboard");
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const official = await isOfficial(user.uid);
+        if (official) {
+          navigate("/official-dashboard");
+        } else {
+          navigate("/citizen-dashboard");
+        }
       }
     });
-  }, []);
+  }, [navigate]);
+
   return (
     <div className="HomePage">
-      <Navbar />
-      <div className="HomeContainer grid grid-cols-1 lg:grid-cols-2 items-center px-5 lg:px-20">
-        <img
-          className="TrafficArt hidden lg:block h-[32rem]"
-          src={TrafficArt}
-          alt=""
-        />
+      
+
+        {/* Right side content */}
         <div>
-          <h3 className="slogan mt-[25%] lg:mt-0 leading-normal font-bold text-center text-base lg:text-[2rem]">
-            REPORT TRAFFIC VIOLATIONS AND PROBLEMS ON ROAD !!!
-          </h3>
+          {/* <h3 className="slogan mt-[25%] lg:mt-0 leading-normal font-bold text-center text-base lg:text-[2rem]">
+            Your City, Your Voice 🚦📣
+          </h3> */}
           <RegisterAccount />
         </div>
-      </div>
+    
     </div>
   );
 };

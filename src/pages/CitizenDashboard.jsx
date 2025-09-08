@@ -8,10 +8,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import DashboardLinkButton from "../components/DashboardLinkButton";
-import Navbar from "../components/Navbar";
 import ReportedComplaints from "../components/ReportedComplaints";
 import SpinnerModal from "../components/SpinnerModal";
-import { auth } from "../utils/Firebase";
+import { auth } from "../utils/Firebase";  // make sure this is uncommented
 import { isOfficial } from "../utils/FirebaseFunctions";
 
 const CitizenDashboard = () => {
@@ -19,6 +18,7 @@ const CitizenDashboard = () => {
   const [SpinnerVisible, setSpinnerVisible] = useState(false);
   const navigate = useNavigate();
   const [params] = useSearchParams();
+
   useEffect(() => {
     setSpinnerVisible(true);
     auth.onAuthStateChanged((user) => {
@@ -35,11 +35,12 @@ const CitizenDashboard = () => {
       }
 
       if (params.get("newUser")) {
-        toast.success("Registration Succesful, Welcome to citizen dashboard", {
+        toast.success("Registration Successful, Welcome to citizen dashboard", {
           icon: "👋",
         });
       }
     });
+
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     return () => {
       window.removeEventListener(
@@ -47,7 +48,8 @@ const CitizenDashboard = () => {
         handleBeforeInstallPrompt
       );
     };
-  }, []);
+  }, [navigate, params]);
+
   const handleBeforeInstallPrompt = (event) => {
     event.preventDefault();
     setDeferredPrompt(event);
@@ -56,11 +58,12 @@ const CitizenDashboard = () => {
   const handleInstall = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
+      deferredPrompt.userChoice.then(() => {
         setDeferredPrompt(null);
       });
     }
   };
+
   const handleLogout = () => {
     auth.signOut();
     navigate("/");
@@ -70,7 +73,6 @@ const CitizenDashboard = () => {
     <>
       <SpinnerModal visible={SpinnerVisible} />
 
-      <Navbar />
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -83,10 +85,13 @@ const CitizenDashboard = () => {
         pauseOnHover
         theme="light"
       />
-      <h2 className=" lg:mt-10 leading-normal font-bold text-center text-xl lg:text-[2rem] my-8 lg:text-left lg:mx-20">
+
+      <h2 className="lg:mt-10 leading-normal font-bold text-center text-xl lg:text-[2rem] my-8 lg:text-left lg:mx-20">
         Dashboard
       </h2>
+
       <div className="grid lg:grid-cols-[0.8fr_0.6fr] mx-10">
+        {/* Left panel with dashboard buttons */}
         <div>
           <DashboardLinkButton
             icon={faEdit}
@@ -112,6 +117,8 @@ const CitizenDashboard = () => {
             className={"lg:hidden"}
           />
         </div>
+
+        {/* Right panel showing reported complaints */}
         <div className="hidden lg:flex">
           <ReportedComplaints />
         </div>

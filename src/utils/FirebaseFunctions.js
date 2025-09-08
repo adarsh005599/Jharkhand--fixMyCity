@@ -1,3 +1,6 @@
+// firebaseHelpers.js
+
+import { auth, db } from "./Firebase";
 import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
@@ -5,24 +8,14 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth, db, storage } from "./Firebase";
-import {
-  addDoc,
-  collection,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  doc,
-  where,
-  arrayUnion,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { Statuses, userTypes } from "./enums";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
-export const handleRegistration = async (formData) => {
+export const userTypes = { official: "official", citizen: "citizen" };
+
+/* ----------------------- USER AUTH ----------------------- */
+
+// Citizen registration
+export const registerCitizen = async (formData) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -30,55 +23,139 @@ export const handleRegistration = async (formData) => {
       formData.password
     );
     const user = userCredential.user;
+
     await updateProfile(user, { displayName: formData.name });
+
+    // Save citizen profile in Firestore
     await setDoc(doc(db, "users", user.uid), {
       name: formData.name,
       email: formData.email,
-      mobile: formData.mobile,
+      mobile: formData.mobile || "",
       type: userTypes.citizen,
+      createdAt: new Date(),
     });
+
     return user;
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
+// Check if a user is official
 export const isOfficial = async (userId) => {
-  const userDocRef = doc(db, "users", userId);
-  const userDocSnapshot = await getDoc(userDocRef);
-  const userData =  userDocSnapshot.data();
-  const userType = userData.type;
-  if (userType === userTypes.official) {
-    return true;
-  } else {
+  try {
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (!userDocSnapshot.exists()) return false;
+
+    const userData = userDocSnapshot.data();
+    return userData.type === userTypes.official;
+  } catch (error) {
+    console.error("Error checking user type:", error);
     return false;
   }
 };
 
-export const handleLogin = async (formData) => {
+/* ----------------------- OFFICIAL LOGIN / FIRST-TIME CREATION ----------------------- */
+export const handleLoginOrRegisterOfficial = async (formData) => {
   try {
     await setPersistence(auth, browserLocalPersistence);
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      formData.email,
-      formData.password
-    );
+
+    let userCredential;
+
+    try {
+      // Try login first
+      userCredential = await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+    } catch (loginError) {
+      if (loginError.code === "auth/user-not-found") {
+        // First-time official registration
+        userCredential = await createUserWithEmailAndPassword(
+          auth,
+          formData.email,
+          formData.password
+        );
+
+        const userRef = doc(db, "users", userCredential.user.uid);
+        await setDoc(userRef, {
+          email: formData.email,
+          type: userTypes.official,
+          createdAt: new Date(),
+        });
+      } else {
+        throw loginError;
+      }
+    }
+
     const user = userCredential.user;
-    const isOfficialUser = await isOfficial(user.uid);
-    return { ...user, official: isOfficialUser };
+    const official = await isOfficial(user.uid);
+
+    return { ...user, official };
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
+/* ----------------------- CITIZEN LOGIN ----------------------- */
+export const loginCitizen = async (formData) => {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      formData.email,
+      formData.password
+    );
+
+    const user = userCredential.user;
+
+    const userDocRef = doc(db, "users", user.uid);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (!userDocSnapshot.exists()) {
+      await auth.signOut();
+      throw new Error("User does not exist in database.");
+    }
+
+    const userData = userDocSnapshot.data();
+    if (userData.type !== userTypes.citizen) {
+      await auth.signOut();
+      throw new Error("Not a citizen account.");
+    }
+
+    return { ...user, citizen: true };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
+
+
+/* ----------------------- COMPLAINTS ----------------------- */
 export const createComplaint = async (formData, media) => {
   const timestamp = Date.now();
-  const fileName = `complaints/${timestamp}.${media.name.split(".")[1]}`;
+
+  // Ensure safe file extension
+  const ext = media.name.includes(".") ? media.name.split(".").pop() : "jpg";
+  const fileName = `complaints/${timestamp}.${ext}`;
   const fileRef = ref(storage, fileName);
+
   try {
     await uploadBytes(fileRef, media);
     const fileLink = await getDownloadURL(fileRef);
-    const updatedFormData = { ...formData, timestamp, mediaPath: fileLink };
+
+    const updatedFormData = {
+      ...formData,
+      timestamp,
+      mediaPath: fileLink,
+      status: Statuses.pending,
+    };
+
     await addDoc(collection(db, "complaints"), updatedFormData);
   } catch (error) {
     throw new Error(error.message);
@@ -96,36 +173,24 @@ export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
       const complaintData = complaintDoc.data();
       const complaintId = complaintDoc.id;
 
+      // Fetch comments for each complaint
       const commentsRef = collection(db, "complaints", complaintId, "comments");
       const commentsQuerySnapshot = await getDocs(commentsRef);
+
       const comments = commentsQuerySnapshot.docs.map((commentDoc) => ({
         id: commentDoc.id,
         ...commentDoc.data(),
       }));
 
-      const complaintWithComments = {
+      complaints.push({
         id: complaintId,
         ...complaintData,
-        comments: comments,
-      };
-
-      complaints.push(complaintWithComments);
+        comments,
+      });
     }
 
     handleComplaintsUpdate(complaints);
   });
-};
-
-export const findComplaintAuthor = async (uid) => {
-  try {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("reportedBy", "==", uid));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.data();
-  } catch (error) {
-    console.error("Error fetching complaints:", error);
-    throw error;
-  }
 };
 
 export const fetchComplaints = (handleComplaintsUpdate) => {
@@ -139,8 +204,9 @@ export const fetchComplaints = (handleComplaintsUpdate) => {
       const complaintId = complaintDoc.id;
       const reportedByUserId = complaintData.reportedBy;
 
+      // Fetch complaint author details
       const userDoc = await getDoc(doc(db, "users", reportedByUserId));
-      const userData = userDoc.data();
+      const userData = userDoc.exists() ? userDoc.data() : { name: "Unknown" };
 
       const complaintWithAuthor = {
         id: complaintId,
@@ -149,52 +215,47 @@ export const fetchComplaints = (handleComplaintsUpdate) => {
         comments: [],
       };
 
+      // Subscribe to comments for this complaint
       const commentsCollection = collection(
         db,
         "complaints",
         complaintId,
         "comments"
       );
-      const commentsUnsubscribe = onSnapshot(
-        commentsCollection,
-        (commentsSnapshot) => {
-          const comments = commentsSnapshot.docs.map((commentDoc) => {
-            const commentData = commentDoc.data();
-            const commentId = commentDoc.id;
 
-            return {
-              id: commentId,
-              author: commentData.author,
-              comment: commentData.comment,
-              timestamp: commentData.timestamp,
-            };
-          });
+      onSnapshot(commentsCollection, (commentsSnapshot) => {
+        const comments = commentsSnapshot.docs.map((commentDoc) => ({
+          id: commentDoc.id,
+          ...commentDoc.data(),
+        }));
 
-          complaintWithAuthor.comments = comments;
-          handleComplaintsUpdate([...updatedComplaints]);
-        }
-      );
+        complaintWithAuthor.comments = comments;
+        handleComplaintsUpdate([...updatedComplaints, complaintWithAuthor]);
+      });
 
       updatedComplaints.push(complaintWithAuthor);
-      complaintWithAuthor.commentsUnsubscribe = commentsUnsubscribe;
     }
 
-    handleComplaintsUpdate([...updatedComplaints]);
+    handleComplaintsUpdate(updatedComplaints);
   });
 };
 
+/* ----------------------- COMMENTS ----------------------- */
 export const addComment = async (complaintID, comment) => {
   try {
     const user = auth.currentUser;
+    if (!user) throw new Error("Not logged in");
+
     const commentsCollection = collection(
       db,
       "complaints",
       complaintID,
       "comments"
     );
+
     const newComment = {
       author: user.uid,
-      comment: comment,
+      comment,
       timestamp: Date.now(),
     };
 
@@ -204,30 +265,31 @@ export const addComment = async (complaintID, comment) => {
   }
 };
 
+/* ----------------------- USERS ----------------------- */
 export const fetchUserById = async (uid) => {
   try {
     const userDocRef = doc(db, "users", uid);
     const userDocSnapshot = await getDoc(userDocRef);
-    return userDocSnapshot.data();
+    return userDocSnapshot.exists() ? userDocSnapshot.data() : null;
   } catch (error) {
-    console.error("Error fetching complaints:", error);
+    console.error("Error fetching user:", error);
     throw error;
   }
 };
 
+/* ----------------------- STATUS UPDATES ----------------------- */
 export const markAsSolved = async (complaintID) => {
   try {
     const complaint = doc(db, "complaints", complaintID);
-
     await updateDoc(complaint, { status: Statuses.solved });
   } catch (error) {
     throw new Error(error.message);
   }
 };
+
 export const markAsRejected = async (complaintID) => {
   try {
     const complaint = doc(db, "complaints", complaintID);
-
     await updateDoc(complaint, { status: Statuses.rejected });
   } catch (error) {
     throw new Error(error.message);

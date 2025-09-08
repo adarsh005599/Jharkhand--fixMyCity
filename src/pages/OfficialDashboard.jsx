@@ -4,7 +4,6 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ComplaintDetailModal from "../components/ComplaintDetailModal";
-import Navbar from "../components/Navbar";
 import SpinnerModal from "../components/SpinnerModal";
 import { auth } from "../utils/Firebase";
 import { fetchComplaints, isOfficial } from "../utils/FirebaseFunctions";
@@ -16,6 +15,7 @@ const OfficialDashboard = () => {
   const [complaint, setComplaint] = useState({});
   const [SpinnerVisible, setSpinnerVisible] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     setSpinnerVisible(true);
     auth.onAuthStateChanged((user) => {
@@ -31,22 +31,20 @@ const OfficialDashboard = () => {
         });
       }
     });
-    const unsubscribe = fetchComplaints(handleComplaintsUpdate);
 
-    return () => {
-      // Clean up the listener when the component unmounts
-      unsubscribe();
-    };
+    const unsubscribe = fetchComplaints(handleComplaintsUpdate);
+    return () => unsubscribe(); // cleanup listener
   }, []);
+
   const handleComplaintsUpdate = (updatedComplaints) => {
     setComplaints(updatedComplaints);
   };
+
   let columns = [
     {
       field: "reason",
       headerName: "Complaint Reason",
       width: 300,
-      headerClassName: "",
     },
     {
       field: "author",
@@ -57,14 +55,12 @@ const OfficialDashboard = () => {
       field: "location",
       headerName: "Reported Location",
       width: 200,
-
       valueGetter: (params) => `${params.row.location.name}`,
     },
     {
       field: "timestamp",
       headerName: "Reported Date & Time",
       width: 200,
-
       valueGetter: (params) => {
         let d = new Date(params.row.timestamp);
         let date = d.toLocaleDateString();
@@ -80,14 +76,10 @@ const OfficialDashboard = () => {
       field: "status",
       headerName: "Status",
       width: 150,
-      headerClassName: "",
       headerAlign: "center",
       align: "center",
       cellClassName: (params) => {
-        if (params.value == null) {
-          return "";
-        }
-
+        if (params.value == null) return "";
         return clsx("StatusCol", {
           inProgress: params.value === Statuses.inProgress,
           Rejected: params.value === Statuses.rejected,
@@ -96,14 +88,15 @@ const OfficialDashboard = () => {
       },
     },
   ];
+
   return (
     <>
       <SpinnerModal visible={SpinnerVisible} />
-      <Navbar />
       <div className="px-20 ">
         <h2 className=" lg:mt-10 leading-normal font-bold text-center text-xl lg:text-[2rem] my-8 lg:text-left">
           Official Dashboard
         </h2>
+
         <Dialog
           open={ModalOpen}
           children={
@@ -113,6 +106,7 @@ const OfficialDashboard = () => {
             />
           }
         />
+
         <DataGrid
           rows={Complaints}
           columns={columns}
@@ -149,8 +143,7 @@ const OfficialDashboard = () => {
               backgroundColor: statusColors.solved,
             },
           }}
-          // checkboxSelection
-        ></DataGrid>
+        />
       </div>
     </>
   );
