@@ -11,6 +11,7 @@ const manifestForPlugin = {
   
   ],
   manifest: {
+    
     name: "FixMyCity",
     short_name: "FixMyCity",
     description: "Application to report Civic issues around you",

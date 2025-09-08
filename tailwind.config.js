@@ -9,6 +9,7 @@ export default {
             width: "0%",
             visibility: "hidden",
           },
+          
           "100%": {
             width: "100%",
           },
