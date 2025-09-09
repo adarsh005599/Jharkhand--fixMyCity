@@ -5,7 +5,6 @@ import {
   CheckCircle, 
   AlertTriangle, 
   Camera, 
-  MessageSquare, 
   TrendingUp, 
   Shield, 
   Droplets, 
@@ -18,30 +17,27 @@ import {
   ArrowRight,
   Play,
   Eye,
-  Clock,
   Award,
   Zap,
   Globe,
-  Heart,
   Target,
   Sparkles,
-  PhoneCall,
-  Mail,
-  Map,
-  ChevronDown,
-  FileText,
   Settings,
   Layers,
   BarChart3,
   Smartphone,
   Monitor
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const PremiumGovCivicPlatform = () => {
   const [activeCard, setActiveCard] = useState(null);
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -50,7 +46,6 @@ const PremiumGovCivicPlatform = () => {
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
     
-    // Enhanced Intersection Observer
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -81,7 +76,7 @@ const PremiumGovCivicPlatform = () => {
       bgGradient: "from-blue-50 via-blue-100 to-indigo-100",
       stats: "2,847 resolved",
       impact: "98% completion rate",
-      image: "🚗"
+      
     },
     {
       icon: Droplets,
@@ -91,7 +86,7 @@ const PremiumGovCivicPlatform = () => {
       bgGradient: "from-cyan-50 via-teal-100 to-blue-100",
       stats: "1,892 resolved",
       impact: "95% completion rate",
-      image: "💧"
+      
     },
     {
       icon: Trash2,
@@ -101,7 +96,7 @@ const PremiumGovCivicPlatform = () => {
       bgGradient: "from-emerald-50 via-green-100 to-teal-100",
       stats: "3,563 resolved",
       impact: "97% completion rate",
-      image: "♻️"
+      
     },
     {
       icon: Lightbulb,
@@ -111,7 +106,7 @@ const PremiumGovCivicPlatform = () => {
       bgGradient: "from-amber-50 via-orange-100 to-red-100",
       stats: "1,674 resolved",
       impact: "99% completion rate",
-      image: "💡"
+      
     },
     {
       icon: TreePine,
@@ -121,7 +116,7 @@ const PremiumGovCivicPlatform = () => {
       bgGradient: "from-green-50 via-emerald-100 to-teal-100",
       stats: "929 resolved",
       impact: "94% completion rate",
-      image: "🌳"
+      
     },
     {
       icon: Building,
@@ -131,7 +126,7 @@ const PremiumGovCivicPlatform = () => {
       bgGradient: "from-purple-50 via-violet-100 to-indigo-100",
       stats: "1,238 resolved",
       impact: "96% completion rate",
-      image: "🏛️"
+      
     }
   ];
 
@@ -142,7 +137,7 @@ const PremiumGovCivicPlatform = () => {
       description: "AI-powered analysis with photo recognition, GPS tagging, and automated categorization through our mobile-first platform",
       icon: Smartphone,
       color: "from-blue-500 via-purple-600 to-indigo-700",
-      image: "📱"
+      
     },
     {
       step: "02", 
@@ -150,7 +145,7 @@ const PremiumGovCivicPlatform = () => {
       description: "Machine learning algorithms verify reports, assess priority levels, and route to appropriate government departments instantly",
       icon: Layers,
       color: "from-indigo-500 via-blue-600 to-cyan-700",
-      image: "🔍"
+      
     },
     {
       step: "03",
@@ -158,7 +153,7 @@ const PremiumGovCivicPlatform = () => {
       description: "Dynamic workflow management assigns issues to qualified teams with performance tracking and accountability metrics",
       icon: Settings,
       color: "from-purple-500 via-pink-600 to-red-700",
-      image: "⚡"
+      
     },
     {
       step: "04",
@@ -166,7 +161,7 @@ const PremiumGovCivicPlatform = () => {
       description: "Live progress tracking with photo updates, citizen feedback integration, and completion verification systems",
       icon: Monitor,
       color: "from-green-500 via-teal-600 to-blue-700",
-      image: "✅"
+      
     }
   ];
 
@@ -184,7 +179,7 @@ const PremiumGovCivicPlatform = () => {
       description: "Military-grade encryption with multi-factor authentication, ensuring complete data protection and privacy compliance",
       color: "from-blue-600 via-indigo-700 to-purple-800",
       bgGradient: "from-blue-50 via-indigo-100 to-purple-100",
-      image: "🔒"
+      
     },
     {
       icon: Eye,
@@ -192,7 +187,7 @@ const PremiumGovCivicPlatform = () => {
       description: "Real-time analytics with interactive visualizations, progress tracking, and performance metrics for complete visibility",
       color: "from-green-600 via-emerald-700 to-teal-800",
       bgGradient: "from-green-50 via-emerald-100 to-teal-100",
-      image: "📊"
+      
     },
     {
       icon: Globe,
@@ -200,7 +195,7 @@ const PremiumGovCivicPlatform = () => {
       description: "Seamless connectivity across government systems, social media, and mobile platforms for comprehensive coverage",
       color: "from-purple-600 via-pink-700 to-red-800",
       bgGradient: "from-purple-50 via-pink-100 to-red-100",
-      image: "🌐"
+      
     },
     {
       icon: BarChart3,
@@ -208,7 +203,7 @@ const PremiumGovCivicPlatform = () => {
       description: "AI-powered insights with predictive modeling, trend analysis, and data-driven decision support systems",
       color: "from-orange-600 via-red-700 to-pink-800",
       bgGradient: "from-orange-50 via-red-100 to-pink-100",
-      image: "📈"
+      
     },
     {
       icon: Target,
@@ -216,7 +211,7 @@ const PremiumGovCivicPlatform = () => {
       description: "GPS-accurate location mapping with geofencing, demographic analysis, and contextual information systems",
       color: "from-cyan-600 via-blue-700 to-indigo-800",
       bgGradient: "from-cyan-50 via-blue-100 to-indigo-100",
-      image: "🎯"
+      
     },
     {
       icon: Award,
@@ -224,45 +219,41 @@ const PremiumGovCivicPlatform = () => {
       description: "Comprehensive KPI tracking with automated reporting, quality assurance, and continuous improvement frameworks",
       color: "from-yellow-600 via-orange-700 to-red-800",
       bgGradient: "from-yellow-50 via-orange-100 to-red-100",
-      image: "🏆"
+      
     }
   ];
-
-  const testimonials = [
-    {
-      name: "Dr. Rajesh Kumar",
-      role: "Municipal Commissioner",
-      image: "👨‍💼",
-      text: "This revolutionary platform has transformed our governance model. Response times reduced by 80%, citizen satisfaction at all-time high.",
-      rating: 5,
-      department: "Delhi Municipal Corporation",
-      city: "New Delhi",
-      avatar: "🏛️"
-    },
-    {
-      name: "Priya Sharma", 
-      role: "Smart City Mission Director",
-      image: "👩‍💼",
-      text: "The AI-powered analytics provide unprecedented insights into urban challenges. A game-changer for smart city initiatives.",
-      rating: 5,
-      department: "Ministry of Urban Development",
-      city: "Mumbai",
-      avatar: "🌆"
-    },
-    {
-      name: "Suresh Patel",
-      role: "District Collector",
-      image: "👨‍🎓",
-      text: "Real-time transparency and citizen engagement have revolutionized our administrative efficiency and public trust.",
-      rating: 5,
-      department: "Pune District Administration",
-      city: "Pune",
-      avatar: "📋"
-    }
-  ];
+const testimonials = [
+  {
+    name: "Dr. Rajesh Kumar",
+    role: "Municipal Commissioner",
+    image: "/man1.jpg", // ✅ must start with /
+    text: "This revolutionary platform has transformed our governance model. Response times reduced by 80%, citizen satisfaction at all-time high.",
+    rating: 4,
+    department: "jharkhand Municipal Corporation",
+    city: "jharkhand",
+  },
+  {
+    name: "Priya Sharma",
+    role: "Housewife",
+    image: "/women.jpg", // ✅ fixed path
+    text: "The AI-powered analytics provide unprecedented insights into urban challenges. A game-changer for smart city initiatives.",
+    rating: 5,
+    department: "warrior Women",
+    city: "Dhanbad",
+  },
+  {
+    name: "Anil Deshmukh",
+    role: "Farmer",
+    image: "/man2.jpg", // ✅ fixed path
+    text: "Real-time transparency and citizen engagement have revolutionized our administrative efficiency and public trust.",
+    rating: 4,
+    department: " Ranchi Citizen",
+    city: " Ranchi",
+  },
+];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 overflow-hidden">
+    <div className="min-h-screen bg-white overflow-hidden">
       <style jsx>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -311,16 +302,16 @@ const PremiumGovCivicPlatform = () => {
 
       {/* Premium Floating Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute top-40 right-32 w-96 h-96 bg-gradient-to-r from-cyan-300/15 via-blue-400/15 to-indigo-500/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-40 left-1/4 w-80 h-80 bg-gradient-to-r from-green-400/20 via-emerald-400/20 to-teal-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }}></div>
-        <div className="absolute bottom-20 right-20 w-64 h-64 bg-gradient-to-r from-purple-400/25 via-pink-400/25 to-red-400/25 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-400/20 via-blue-400/20 to-blue-400/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute top-40 right-32 w-96 h-96 bg-gradient-to-r from-gray-300/15 via-blue-400/15 to-blue-500/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-40 left-1/4 w-80 h-80 bg-gradient-to-r from-gray-400/20 via-gray-400/20 to-gray-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute bottom-20 right-20 w-64 h-64 bg-gradient-to-r from-blue-400/25 via-blue-400/25 to-blue-400/25 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
       </div>
 
       {/* Premium Hero Section */}
       <section className="relative min-h-screen flex items-center overflow-hidden" id="hero">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-blue-800 to-purple-900">
-          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/10 to-purple-500/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-950">
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/10 to-indigo-500/10"></div>
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.1) 0%, transparent 50%)`
           }}></div>
@@ -339,7 +330,7 @@ const PremiumGovCivicPlatform = () => {
                 <h1 className="text-6xl lg:text-8xl font-bold leading-tight">
                   <span className="text-white">Digital India</span>
                   <br />
-                  <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
+                  <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
                     Smart Governance
                   </span>
                   <br />
@@ -354,7 +345,10 @@ const PremiumGovCivicPlatform = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-6 pt-8">
-                <button className="group bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 text-white px-12 py-6 rounded-2xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden animate-gradient">
+                <button
+                  onClick={() => navigate('/report')}
+                  className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-12 py-6 rounded-2xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden animate-gradient"
+                >
                   <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   <Camera className="w-6 h-6 mr-4 relative z-10" />
                   <span className="relative z-10">Report Issue Now</span>
@@ -387,9 +381,9 @@ const PremiumGovCivicPlatform = () => {
               <div className="relative z-10">
                 <div className="glass-morphism rounded-3xl p-8 shadow-2xl transform hover:scale-105 transition-all duration-500 hover-lift">
                   <div className="text-center space-y-8">
-                    <div className="text-6xl mb-6">🏛️</div>
+                    <div className="text-6xl mb-6"></div>
                     
-                    <div className="w-24 h-24 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl animate-pulse-glow">
+                    <div className="w-24 h-24 bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 rounded-3xl flex items-center justify-center mx-auto shadow-2xl animate-pulse-glow">
                       <MapPin className="w-12 h-12 text-white" />
                     </div>
                     
@@ -413,12 +407,12 @@ const PremiumGovCivicPlatform = () => {
               </div>
               
               {/* Floating Elements */}
-              <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-r from-pink-500/30 to-purple-600/30 rounded-3xl flex items-center justify-center backdrop-blur-sm animate-float">
-                <span className="text-4xl">⚡</span>
+              <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-r from-blue-500/30 to-blue-600/30 rounded-3xl flex items-center justify-center backdrop-blur-sm animate-float">
+                <span className="text-4xl"></span>
               </div>
               
-              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-r from-green-500/30 to-emerald-600/30 rounded-3xl flex items-center justify-center backdrop-blur-sm animate-float" style={{ animationDelay: '1s' }}>
-                <span className="text-3xl">✨</span>
+              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-r from-gray-500/30 to-gray-600/30 rounded-3xl flex items-center justify-center backdrop-blur-sm animate-float" style={{ animationDelay: '1s' }}>
+                <span className="text-3xl"></span>
               </div>
             </div>
           </div>
@@ -426,12 +420,12 @@ const PremiumGovCivicPlatform = () => {
       </section>
 
       {/* Premium Stats Section */}
-      <section className="py-24 bg-gradient-to-r from-white via-blue-50 to-indigo-50 relative" id="stats">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5"></div>
+      <section className="py-24 bg-white relative" id="stats">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-blue-500/5 to-gray-500/5"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div className="text-5xl mb-6">📊</div>
+            <div className="text-5xl mb-6"></div>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Platform Impact Metrics</h2>
             <p className="text-xl text-gray-600">Real-time performance dashboard</p>
           </div>
@@ -457,19 +451,19 @@ const PremiumGovCivicPlatform = () => {
       </section>
 
       {/* Premium Process Section */}
-      <section className="py-24 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 relative overflow-hidden" id="process">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10"></div>
+      <section className="py-24 bg-gray-900 relative overflow-hidden" id="process">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <div className="text-6xl mb-8">⚡</div>
+            <div className="text-6xl mb-8"></div>
             <div className="inline-flex items-center glass-morphism text-white px-6 py-3 rounded-xl font-medium mb-8">
               <Zap className="w-5 h-5 mr-2" />
               AI-Powered Workflow
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
               How Our Smart
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient"> AI System </span>
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient"> AI System </span>
               Works
             </h2>
             <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
@@ -506,7 +500,7 @@ const PremiumGovCivicPlatform = () => {
                 
                 {index < processSteps.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
                       <ArrowRight className="w-5 h-5 text-white" />
                     </div>
                   </div>
@@ -518,15 +512,15 @@ const PremiumGovCivicPlatform = () => {
       </section>
 
       {/* Premium Issue Categories */}
-      <section className="py-24 bg-gradient-to-br from-white via-gray-50 to-blue-50 relative" id="categories">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5"></div>
+      <section className="py-24 bg-white relative" id="categories">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-blue-500/5 to-cyan-500/5"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <div className="text-6xl mb-8">🎯</div>
+            <div className="text-6xl mb-8"></div>
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
               Smart Civic
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent"> Categories </span>
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent"> Categories </span>
               Hub
             </h2>
             <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
@@ -544,7 +538,7 @@ const PremiumGovCivicPlatform = () => {
                 onMouseLeave={() => setActiveCard(null)}
               >
                 <div className={`relative bg-gradient-to-br ${category.bgGradient} rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all border border-gray-200/50 group-hover:border-blue-300/50 premium-shadow`}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-white/50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-8">
@@ -570,7 +564,10 @@ const PremiumGovCivicPlatform = () => {
                         {category.description}
                       </p>
                       
-                      <button className="w-full bg-white/80 hover:bg-white border-2 border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 px-6 py-4 rounded-2xl font-bold transition-all flex items-center justify-center group-hover:shadow-xl transform hover:scale-105">
+                      <button 
+                        onClick={() => navigate('/report')}
+                        className="w-full bg-white/80 hover:bg-white border-2 border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 px-6 py-4 rounded-2xl font-bold transition-all flex items-center justify-center group-hover:shadow-xl transform hover:scale-105"
+                      >
                         <Camera className="w-5 h-5 mr-3" />
                         Report Issue
                         <ArrowRight className="w-5 h-5 ml-auto group-hover:translate-x-1 transition-transform" />
@@ -579,7 +576,7 @@ const PremiumGovCivicPlatform = () => {
                   </div>
                   
                   {/* Floating accent */}
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-r from-blue-400/30 to-purple-500/30 rounded-full animate-pulse"></div>
+                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-r from-blue-400/30 to-blue-500/30 rounded-full animate-pulse"></div>
                 </div>
               </div>
             ))}
@@ -588,15 +585,15 @@ const PremiumGovCivicPlatform = () => {
       </section>
 
       {/* Premium Features Section */}
-      <section className="py-24 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden" id="features">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10"></div>
+      <section className="py-24 bg-gray-900 relative overflow-hidden" id="features">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <div className="text-6xl mb-8">🚀</div>
+            <div className="text-6xl mb-8"></div>
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
               Next-Generation
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-gradient"> Platform Features</span>
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-400 bg-clip-text text-transparent animate-gradient"> Platform Features</span>
             </h2>
             <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Advanced technology stack designed for enterprise-grade performance and citizen satisfaction
@@ -629,7 +626,7 @@ const PremiumGovCivicPlatform = () => {
                   </div>
                   
                   {/* Glowing border effect */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity blur-sm"></div>
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-blue-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity blur-sm"></div>
                 </div>
               </div>
             ))}
@@ -638,78 +635,84 @@ const PremiumGovCivicPlatform = () => {
       </section>
 
       {/* Premium Testimonials */}
-      <section className="py-24 bg-gradient-to-br from-white via-blue-50 to-indigo-50 relative" id="testimonials">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="text-6xl mb-8">🎖️</div>
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
-              Government
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent"> Success Stories</span>
-            </h2>
-            <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Transforming governance across India - testimonials from senior government officials
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-10">
-            {testimonials.map((testimonial, index) => (
-              <div 
-                key={index} 
-                className={`animate-slide-in hover-lift`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-gray-200/50 hover:border-blue-300/50 transition-all group premium-shadow">
-                  <div className="text-center space-y-6">
-                    <div className="text-5xl">{testimonial.avatar}</div>
-                    
-                    <div className="flex items-center justify-center">
-                      <div className="text-4xl mr-4">{testimonial.image}</div>
-                      <div className="text-left">
-                        <h4 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{testimonial.name}</h4>
-                        <p className="text-gray-600 font-medium">{testimonial.role}</p>
-                        <div className="flex items-center mt-2 text-xs text-gray-500">
-                          <Building className="w-3 h-3 mr-1" />
-                          <span>{testimonial.department}</span>
-                        </div>
-                      </div>
-                    </div>
-                  
-                    <div className="flex justify-center mb-6">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  
-                    <blockquote className="text-gray-700 leading-relaxed italic text-lg">
-                      "{testimonial.text}"
-                    </blockquote>
-                  
-                    <div className="inline-flex items-center bg-gradient-to-r from-blue-100 to-purple-100 border border-blue-200 text-blue-800 px-4 py-2 rounded-xl text-sm font-semibold">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      {testimonial.city}
-                    </div>
+<section className="py-24 bg-white relative" id="testimonials">
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-blue-500/5 to-cyan-500/5"></div>
+  
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-20">
+      <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
+        Government
+        <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent"> Success Stories</span>
+      </h2>
+      <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+        Transforming governance of jharkhand and Citizens Golden review's
+      </p>
+    </div>
+    
+    <div className="grid md:grid-cols-3 gap-10">
+      {testimonials.map((testimonial, index) => (
+        <div 
+          key={index} 
+          className="animate-slide-in hover-lift"
+          style={{ animationDelay: `${index * 200}ms` }}
+        >
+          <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-gray-200/50 hover:border-blue-300/50 transition-all group premium-shadow">
+            <div className="text-center space-y-6">
+              
+              {/* ✅ Image Display */}
+              <div className="flex items-center justify-center">
+                <img 
+                  src={testimonial.image} 
+                  alt={testimonial.name} 
+                  className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-blue-200"
+                />
+                <div className="text-left">
+                  <h4 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                    {testimonial.name}
+                  </h4>
+                  <p className="text-gray-600 font-medium">{testimonial.role}</p>
+                  <div className="flex items-center mt-2 text-xs text-gray-500">
+                    <Building className="w-3 h-3 mr-1" />
+                    <span>{testimonial.department}</span>
                   </div>
                 </div>
               </div>
-            ))}
+            
+              {/* ✅ Rating */}
+              <div className="flex justify-center mb-6">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+            
+              <blockquote className="text-gray-700 leading-relaxed italic text-lg">
+                "{testimonial.text}"
+              </blockquote>
+            
+              <div className="inline-flex items-center bg-gradient-to-r from-blue-100 to-blue-100 border border-blue-200 text-blue-800 px-4 py-2 rounded-xl text-sm font-semibold">
+                <MapPin className="w-4 h-4 mr-2" />
+                {testimonial.city}
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Premium CTA Section */}
       <section className="py-24 relative overflow-hidden" id="cta">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20"></div>
+        <div className="absolute inset-0 bg-gray-900">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-indigo-600/20 to-blue-600/20"></div>
           <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)'
+            backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(120, 119, 198, 0.3) 0%, transparent 50%)'
           }}></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="max-w-4xl mx-auto space-y-12">
-            <div className="text-7xl mb-8">🌟</div>
+            <div className="text-7xl mb-8"></div>
             
             <div className="inline-flex items-center glass-morphism text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl">
               <Sparkles className="w-6 h-6 mr-3" />
@@ -719,7 +722,7 @@ const PremiumGovCivicPlatform = () => {
             <h2 className="text-5xl md:text-7xl font-bold text-white leading-tight">
               Transform Your
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
                 Community Today
               </span>
             </h2>
@@ -730,7 +733,10 @@ const PremiumGovCivicPlatform = () => {
             </p>
           
             <div className="flex flex-col sm:flex-row gap-6 justify-center pt-12">
-              <button className="group bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden animate-gradient">
+              <button 
+                onClick={() => navigate('/report')}
+                className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden animate-gradient"
+              >
                 <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                 <Camera className="w-7 h-7 mr-4 relative z-10" />
                 <span className="relative z-10">Start Reporting Issues</span>
@@ -747,25 +753,42 @@ const PremiumGovCivicPlatform = () => {
               <div className="text-center">
                 <div className="text-4xl font-bold text-white mb-2">50+</div>
                 <div className="text-gray-300">Smart Cities Connected</div>
-                <div className="text-2xl mt-2">🏙️</div>
+                <div className="text-2xl mt-2"></div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-white mb-2">24/7</div>
                 <div className="text-gray-300">AI-Powered Support</div>
-                <div className="text-2xl mt-2">🤖</div>
+                <div className="text-2xl mt-2"></div>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold text-white mb-2">100%</div>
                 <div className="text-gray-300">Secure & Transparent</div>
-                <div className="text-2xl mt-2">🔒</div>
+                <div className="text-2xl mt-2"></div>
               </div>
             </div>
           </div>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 py-8">
+            {["/Stempid.jpg", "/potholes.png", "/streetLight.webp", "/cityCleaning.webp"].map((src, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-center bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
+                style={{ width: 300, height: 300 }}
+              >
+                <img
+                  src={src}
+                  alt={`Civic Example ${idx + 1}`}
+                  className="object-cover w-full h-full"
+                  style={{ display: "block" }}
+                />
+              </div>
+            ))}
+          </div>
+          
           
           <div className="mt-20 text-center">
             <div className="flex items-center justify-center space-x-3 text-white/75 text-lg">
               <Shield className="w-5 h-5" />
-              <span>Proudly Secured by Government of India</span>
+              <span>Proudly Secured by Government of Jharkhand</span>
               <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
             </div>
             <p className="mt-4 text-gray-400">🇮🇳 Building Digital India Together 🇮🇳</p>

@@ -58,6 +58,7 @@ export const isOfficial = async (userId) => {
 };
 
 /* ----------------------- OFFICIAL LOGIN / FIRST-TIME CREATION ----------------------- */
+// firebaseHelpers.js
 export const handleLoginOrRegisterOfficial = async (formData) => {
   try {
     await setPersistence(auth, browserLocalPersistence);
@@ -94,11 +95,23 @@ export const handleLoginOrRegisterOfficial = async (formData) => {
     const user = userCredential.user;
     const official = await isOfficial(user.uid);
 
-    return { ...user, official };
+    if (!official) {
+      throw new Error("This account is not registered as an official.");
+    }
+
+    // ✅ return a safe plain object
+    return {
+      uid: user.uid,
+      email: user.email,
+      official,
+      metadata: user.metadata,
+    };
   } catch (error) {
     throw new Error(error.message);
   }
 };
+
+
 
 /* ----------------------- CITIZEN LOGIN ----------------------- */
 export const loginCitizen = async (formData) => {
@@ -192,6 +205,7 @@ export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
     handleComplaintsUpdate(complaints);
   });
 };
+
 
 export const fetchComplaints = (handleComplaintsUpdate) => {
   const complaintsCollection = collection(db, "complaints");
