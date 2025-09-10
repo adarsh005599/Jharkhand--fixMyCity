@@ -698,7 +698,7 @@ const testimonials = [
             </div>
           </div>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-8 py-8">
-            {["/Stempid.jpg", "/potholes.png", "/streetLight.webp", "/cityCleaning.webp"].map((src, idx) => (
+            {["/stempid.jpg", "/potholes.png", "/streetLight.webp", "/cityCleaning.webp"].map((src, idx) => (
               <div
                 key={idx}
                 className="flex items-center justify-center bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
