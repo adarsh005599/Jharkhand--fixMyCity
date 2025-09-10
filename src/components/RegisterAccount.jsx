@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { registerCitizen } from "../utils/FirebaseFunctions";
 import SpinnerModal from "../components/SpinnerModal";
 import CivicReportingPlatform from "./CivicReportingPlatform";
+import ChatBotWidget from "./ChatBotWidget";
 
 // Styled TextField
 export const TextField = styled(MuiTextField)(() => ({
@@ -61,14 +62,13 @@ const RegisterAccount = () => {
       {!showForm && (
         <div className="absolute inset-0 flex items-end z-10">
   <p
-    className="text-xl font-bold text-white px-6 py-3 rounded-2xl mb-12 cursor-pointer
-               bg-gradient-to-r from-blue-500 via-purple-500 to-teal-500
-               shadow-lg hover:scale-105 transform transition-all duration-300
-               border-2 border-white/30"
-    onClick={() => setShowForm(true)}
-  >
-    Register
-  </p>
+  className="text-base font-semibold text-white px-5 py-2  rounded-xl cursor-pointer 
+             bg-blue-600/40 hover:bg-blue-700 transition-colors duration-300"
+  onClick={() => setShowForm(true)}
+>
+  Register
+</p>
+
 </div>
       )}
 
@@ -180,6 +180,7 @@ const RegisterAccount = () => {
           </form>
         </div>
       )}
+      <ChatBotWidget/>
     </div>
   );
 };

@@ -45,11 +45,14 @@ const CitizenLogin = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center  overflow-y-auto">
+    <div
+      className="h-screen w-screen flex items-center justify-center overflow-y-auto"
+      style={{ backgroundColor: "#eff6ff" }}
+    >
       <SpinnerModal visible={spinner} />
 
       {/* Card */}
-      <div className="w-[90%] sm:w-[400px] bg-teal-700 backdrop-blur-lg rounded-2xl shadow-xl p-8 flex flex-col items-center">
+      <div className="w-[90%] sm:w-[400px]  bg-gradient-to-r from-teal-700/70 to-sky-600/70  rounded-2xl shadow-xl p-8 flex flex-col items-center">
         {/* User icon */}
         <div className="bg-blue-900 text-white rounded-full w-16 h-16 flex items-center justify-center -mt-14 mb-6">
           <svg
@@ -119,7 +122,7 @@ const CitizenLogin = () => {
             variant="contained"
             type="submit"
             disabled={spinner}
-            className="!bg-blue-700 hover:!bg-blue-800 !rounded-lg !py-3 !font-bold"
+            className="bg-blue-900 hover:!bg-blue-800 !rounded-lg !py-3 !font-bold"
           >
             LOGIN
           </Button>

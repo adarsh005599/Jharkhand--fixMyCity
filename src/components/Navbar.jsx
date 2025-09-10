@@ -9,7 +9,7 @@ import { isOfficial } from "../utils/FirebaseFunctions";
 import Logo from "/src/assets/logo1.png";
 
 export const Button = styled(MuiButton)((props) => ({
-  borderRadius: "25px",background: "linear-gradient(90deg, #0f766e, #0284c7)",
+  borderRadius: "10px",background: "linear-gradient(90deg, #0f766e, #0284c7)",
   color: "#fff",
   borderColor: "transparent",
   padding: "10px 28px",
@@ -23,7 +23,6 @@ export const Button = styled(MuiButton)((props) => ({
     boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
   },
 }));
-
 const Navbar = () => {
   const [Visible, setVisible] = useState(false);
   const [User, setUser] = useState(null);
@@ -47,7 +46,6 @@ const Navbar = () => {
     });
   }, []);
 
-
 useEffect(() => {
   const handleScroll = () => {
     setScrolled(window.scrollY > 50);
@@ -61,10 +59,9 @@ useEffect(() => {
       {/* Navbar container with premium gradient */}
       <div
   className={`Navbar fixed top-0 left-0 w-full flex justify-between items-center px-4 
-              ${scrolled ? "py-2 bg-teal-900/80 shadow-2xl" : "py-4 bg-gradient-to-r from-teal-700/70 to-sky-600/70"}
+              ${scrolled ? "py-2 bg-teal-900/80 shadow-2xl" : "py-1 bg-gradient-to-r from-teal-700/70 to-sky-600/70"}
               lg:px-8 text-white rounded-b-3xl backdrop-blur-md transition-all duration-500 z-50`}
 >
-
         <Link to="/">
           <div className="LogoGroup flex items-center gap-3">
             <img className="logo h-8 lg:h-12 drop-shadow-lg" src={Logo} />
@@ -73,7 +70,6 @@ useEffect(() => {
             </h2>
           </div>
         </Link>
-
         {/* Desktop Buttons */}
         {User ? (
           <div className="ButtonGroup gap-8 hidden lg:flex">

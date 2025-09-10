@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import DashboardLinkButton from "../components/DashboardLinkButton";
 import ReportedComplaints from "../components/ReportedComplaints";
 import SpinnerModal from "../components/SpinnerModal";
-import { auth } from "../utils/Firebase";  // make sure this is uncommented
+import { auth } from "../utils/Firebase";
 import { isOfficial } from "../utils/FirebaseFunctions";
 
 const CitizenDashboard = () => {
@@ -33,14 +33,12 @@ const CitizenDashboard = () => {
           }
         });
       }
-
       if (params.get("newUser")) {
         toast.success("Registration Successful, Welcome to citizen dashboard", {
           icon: "👋",
         });
       }
     });
-
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     return () => {
       window.removeEventListener(
@@ -70,9 +68,14 @@ const CitizenDashboard = () => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        backgroundColor: "#eff6ff",
+        minHeight: "100vh",
+        paddingTop: "90px", // ✅ prevents overlap with navbar
+      }}
+    >
       <SpinnerModal visible={SpinnerVisible} />
-
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -86,44 +89,86 @@ const CitizenDashboard = () => {
         theme="light"
       />
 
-      <h2 className="lg:mt-10 leading-normal font-bold text-center text-xl lg:text-[2rem] my-8 lg:text-left lg:mx-20">
+      <h2
+        style={{
+          marginBottom: "2rem",
+          fontWeight: "bold",
+          fontSize: "2rem",
+          textAlign: "center",
+        }}
+      >
         Dashboard
       </h2>
 
-      <div className="grid lg:grid-cols-[0.8fr_0.6fr] mx-10">
-        {/* Left panel with dashboard buttons */}
-        <div>
-          <DashboardLinkButton
-            icon={faEdit}
-            name={"New Complaint"}
-            link={"/report"}
-          />
-          <DashboardLinkButton
-            icon={faTrafficLight}
-            name={"Track Reported complaints"}
-            link={"/track-complaints"}
-            className={"lg:hidden"}
-          />
-          <DashboardLinkButton
-            icon={faMobileScreen}
-            name={"Install as an app (Mobile)"}
-            onClick={handleInstall}
-            className={"lg:hidden"}
-          />
-          <DashboardLinkButton
-            icon={faSignOut}
-            name={"Logout"}
-            onClick={handleLogout}
-            className={"lg:hidden"}
-          />
-        </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "0.8fr 0.6fr",
+          gap: "2rem",
+          marginLeft: "2.5rem",
+          marginRight: "2.5rem",
+        }}
+      >
+        
+        {/* Left panel - New Complaint Card */}
+<div
+  style={{
+    backgroundColor: "#ffffff",
+    borderRadius: "1rem",
+    boxShadow: "0 2px 16px rgba(0,0,0,0.1)",
+    minHeight: "300px",
+    width: "100%",
+     // ✅ removes black outline
+    display: "flex",            // ✅ centers content
+    flexDirection: "column",    // ✅ stack buttons vertically
+    justifyContent: "center",   // ✅ vertical center
+    alignItems: "center",       // ✅ horizontal center
+    padding: "1rem",            // ✅ balance spacing
+  }}
+  
+>
+  
+  <DashboardLinkButton
+    icon={faEdit}
+    name={"New Complaint"}
+    link={"/report"}
+  />
+  <DashboardLinkButton
+    icon={faTrafficLight}
+    name={"Track Reported complaints"}
+    link={"/track-complaints"}
+    className={"lg:hidden"}
+  />
+  <DashboardLinkButton
+    icon={faMobileScreen}
+    name={"Install as an app (Mobile)"}
+    onClick={handleInstall}
+    className={"lg:hidden"}
+  />
+  <DashboardLinkButton
+    icon={faSignOut}
+    name={"Logout"}
+    onClick={handleLogout}
+    className={"lg:hidden"}
+  />
+</div>
 
-        {/* Right panel showing reported complaints */}
-        <div className="hidden lg:flex">
+
+        {/* Right panel - Reported Complaints */}
+        <div
+          style={{
+            backgroundColor: "#ffffff",
+            borderRadius: "1rem",
+            boxShadow: "0 2px 16px rgba(0,0,0,0.1)",
+            minHeight: "300px",
+            width: "100%",
+            border: "none", // ✅ removes black outline
+          }}
+        >
           <ReportedComplaints />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
