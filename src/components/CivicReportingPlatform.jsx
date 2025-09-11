@@ -358,12 +358,12 @@ const testimonials = [
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Platform Impact Metrics</h2>
             <p className="text-xl text-gray-600">Real-time performance dashboard</p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className={`text-center group cursor-pointer animate-slide-in hover-lift`}
+                className={``}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className={`relative bg-gradient-to-br ${stat.bg} p-8 rounded-3xl shadow-xl transition-all border border-gray-200/50`}>
@@ -403,7 +403,7 @@ const testimonials = [
             {processSteps.map((step, index) => (
               <div 
                 key={index} 
-                className={`relative group animate-slide-in hover-lift`}
+                className={``}
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20  transition-all">
@@ -604,7 +604,7 @@ const testimonials = [
                   </div>
                 </div>
               </div>
-            
+    
               {/* ✅ Rating */}
               <div className="flex justify-center mb-6">
                 {[...Array(testimonial.rating)].map((_, i) => (
