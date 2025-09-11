@@ -111,8 +111,6 @@ export const handleLoginOrRegisterOfficial = async (formData) => {
   }
 };
 
-
-
 /* ----------------------- CITIZEN LOGIN ----------------------- */
 export const loginCitizen = async (formData) => {
   try {
@@ -145,9 +143,6 @@ export const loginCitizen = async (formData) => {
     throw new Error(error.message);
   }
 };
-
-
-
 
 /* ----------------------- COMPLAINTS ----------------------- */
 export const createComplaint = async (formData, media) => {
@@ -205,8 +200,6 @@ export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
     handleComplaintsUpdate(complaints);
   });
 };
-
-
 export const fetchComplaints = (handleComplaintsUpdate) => {
   const complaintsCollection = collection(db, "complaints");
 
