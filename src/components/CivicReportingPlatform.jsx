@@ -663,11 +663,13 @@ const testimonials = [
                 onClick={() => navigate('/report')}
                 className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden animate-gradient"
               >
+                
                 <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                 <Camera className="w-7 h-7 mr-4 relative z-10" />
                 <span className="relative z-10">Start Reporting Issues</span>
                 <ArrowRight className="w-6 h-6 ml-4 group-hover:translate-x-2 transition-transform relative z-10" />
               </button>
+              
               
               <button className="group glass-morphism text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
                 <Eye className="w-7 h-7 mr-4 group-hover:scale-110 transition-transform" />
