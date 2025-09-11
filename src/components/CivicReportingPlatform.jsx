@@ -309,9 +309,9 @@ const testimonials = [
           platform. Report issues instantly and track resolutions in real-time.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-6 pt-6">
+        <div className="flex flex-col sm:flex-row gap-6 pt-6 cursor-pointer" >
           <button
-            onClick={() => navigate("/report")}
+              onClick={() => navigate('/report')}
             className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center cursor-pointer shadow-lg transition-all"
           >
             <Camera className="w-5 h-5 mr-3" />
@@ -348,7 +348,6 @@ const testimonials = [
 
 </div>
 
-      
       {/* Premium Stats Section */}
       <section className="py-24 bg-white relative" id="stats">
         <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-blue-500/5 to-gray-500/5"></div>
@@ -367,11 +366,11 @@ const testimonials = [
                 className={`text-center group cursor-pointer animate-slide-in hover-lift`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`relative bg-gradient-to-br ${stat.bg} p-8 rounded-3xl shadow-xl group-hover:shadow-2xl transition-all border border-gray-200/50`}>
-                  <div className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r ${stat.color} rounded-2xl mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
+                <div className={`relative bg-gradient-to-br ${stat.bg} p-8 rounded-3xl shadow-xl transition-all border border-gray-200/50`}>
+                  <div className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r ${stat.color} rounded-2xl mb-6 shadow-lg  transition-transform`}>
                     <stat.icon className="w-10 h-10 text-white" />
                   </div>
-                  <div className="text-4xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{stat.number}</div>
+                  <div className="text-4xl font-bold text-gray-900 mb-3  transition-colors">{stat.number}</div>
                   <div className="text-gray-600 font-medium text-lg">{stat.label}</div>
                 </div>
               </div>
@@ -379,7 +378,6 @@ const testimonials = [
           </div>
         </div>
       </section>
-
       {/* Premium Process Section */}
       <section className="py-24 bg-gray-900 relative overflow-hidden" id="process">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10"></div>
@@ -408,7 +406,7 @@ const testimonials = [
                 className={`relative group animate-slide-in hover-lift`}
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20 group-hover:border-white/40 transition-all">
+                <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20  transition-all">
                   <div className="text-center space-y-6">
                     <div className="text-5xl">{step.image}</div>
                     
@@ -416,7 +414,7 @@ const testimonials = [
                       <div className="text-6xl font-bold text-white/20 absolute -top-4 -right-2">
                         {step.step}
                       </div>
-                      <div className={`w-20 h-20 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform mx-auto animate-pulse-glow`}>
+                      <div className={`w-20 h-20 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center shadow-xl  transition-transform mx-auto animate-pulse-glow`}>
                         <step.icon className="w-10 h-10 text-white" />
                       </div>
                     </div>
@@ -462,12 +460,12 @@ const testimonials = [
             {issueCategories.map((category, index) => (
               <div 
                 key={index} 
-                className={`group cursor-pointer animate-slide-in hover-lift`}
+                className={``}
                 style={{ animationDelay: `${index * 100}ms` }}
                 onMouseEnter={() => setActiveCard(index)}
                 onMouseLeave={() => setActiveCard(null)}
               >
-                <div className={`relative bg-gradient-to-br ${category.bgGradient} rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all border border-gray-200/50 group-hover:border-blue-300/50 premium-shadow`}>
+                <div className={`relative bg-gradient-to-br ${category.bgGradient} rounded-3xl p-8 shadow-xl  transition-all border border-gray-200/50  premium-shadow`}>
                   <div className="absolute inset-0 bg-white/50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   
                   <div className="relative z-10">
@@ -481,13 +479,12 @@ const testimonials = [
                         </div>
                       </div>
                     </div>
-                    
-                    <div className={`w-18 h-18 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center mb-8 shadow-2xl group-hover:scale-110 transition-all animate-pulse-glow`}>
+                    <div className={`w-18 h-18 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center mb-8 shadow-2xl  transition-all animate-pulse-glow`}>
                       <category.icon className="w-9 h-9 text-white" />
                     </div>
                     
                     <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-4  transition-colors">
                         {category.title}
                       </h3>
                       <p className="text-gray-600 leading-relaxed mb-8">
@@ -496,7 +493,7 @@ const testimonials = [
                       
                       <button 
                         onClick={() => navigate('/report')}
-                        className="w-full bg-white/80 hover:bg-white border-2 border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 px-6 py-4 rounded-2xl font-bold transition-all flex items-center justify-center group-hover:shadow-xl transform hover:scale-105"
+                        className="w-full bg-white/80  border-2 border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 px-6 py-4 rounded-2xl font-bold transition-all flex items-center justify-center group-hover:shadow-xl transform hover:scale-105"
                       >
                         <Camera className="w-5 h-5 mr-3" />
                         Report Issue
@@ -534,19 +531,19 @@ const testimonials = [
             {governmentFeatures.map((feature, index) => (
               <div 
                 key={index} 
-                className={`animate-slide-in hover-lift`}
+                className={``}
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20 hover:border-white/40 transition-all group premium-shadow">
+                <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20  transition-all group premium-shadow">
                   <div className="text-center space-y-6">
                     <div className="text-5xl">{feature.image}</div>
                     
-                    <div className={`w-18 h-18 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all mx-auto animate-pulse-glow`}>
+                    <div className={`w-18 h-18 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center shadow-2xl  transition-all mx-auto animate-pulse-glow`}>
                       <feature.icon className="w-9 h-9 text-white" />
                     </div>
                     
                     <div>
-                      <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
+                      <h3 className="text-2xl font-bold text-white mb-4 transition-colors">
                         {feature.title}
                       </h3>
                       <p className="text-gray-300 leading-relaxed">
@@ -556,7 +553,7 @@ const testimonials = [
                   </div>
                   
                   {/* Glowing border effect */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-blue-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity blur-sm"></div>
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-blue-500/20 to-blue-500/20 opacity-0  transition-opacity blur-sm"></div>
                 </div>
               </div>
             ))}
@@ -639,7 +636,6 @@ const testimonials = [
             backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(120, 119, 198, 0.3) 0%, transparent 50%)'
           }}></div>
         </div>
-        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="max-w-4xl mx-auto space-y-12">
             <div className="text-7xl mb-8"></div>
@@ -656,7 +652,7 @@ const testimonials = [
                 Community Today
               </span>
             </h2>
-            
+
             <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Experience the future of citizen-government interaction through our revolutionary AI-powered platform. 
               Join millions of empowered citizens building smarter, more responsive communities.
@@ -681,7 +677,7 @@ const testimonials = [
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 pt-16 max-w-3xl mx-auto">
               <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">50+</div>
+                <div className="text-4xl font-bold text-white mb-2">10+</div>
                 <div className="text-gray-300">Smart Cities Connected</div>
                 <div className="text-2xl mt-2"></div>
               </div>
@@ -713,7 +709,6 @@ const testimonials = [
               </div>
             ))}
           </div>
-          
           
           <div className="mt-20 text-center">
             <div className="flex items-center justify-center space-x-3 text-white/75 text-lg">

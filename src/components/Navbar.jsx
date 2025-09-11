@@ -59,7 +59,7 @@ useEffect(() => {
       {/* Navbar container with premium gradient */}
       <div
   className={`Navbar fixed top-0 left-0 w-full flex justify-between items-center px-4 
-              ${scrolled ? "py-2 bg-teal-900/80 shadow-2xl" : "py-1 bg-gradient-to-r from-teal-700/70 to-sky-600/70"}
+              ${scrolled ? "py-2 glass-morphism shadow-md" : "py-1 glass-morphism shadow-md"}
               lg:px-8 text-white rounded-b-3xl backdrop-blur-md transition-all duration-500 z-50`}
 >
         <Link to="/">

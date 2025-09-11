@@ -34,11 +34,30 @@ export default function ChatBotWidget() {
           {
             id: "3",
             message:
-              "Thanks for your message! Our team will get back to you soon 🚀",
-            end: true,
+              "Thanks for your message! Our offcials will get back to you soon",
+             end: true,
           },
+          // {
+          //   id: "4",
+          //   message:
+          //     "Kindely sumbit your isuue...",
+          //   trigger: "5"
+          // },
+          // {
+          //   id: "5",
+          //   message:
+          //     "your issues has been sent to the Officials! they will resolve your problem soon!!!",
+          //     trigger: "6"
+          // },
+          // {
+          //   id: "6",
+          //   message:
+          //     "anythigs else i can help you today??",
+          //   end: true,
+          // },
         ]}
       />
     </ThemeProvider>
   );
 }
+
