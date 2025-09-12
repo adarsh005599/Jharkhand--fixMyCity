@@ -434,8 +434,8 @@ const testimonials = [
             >
               <step.icon className="w-8 h-8 text-white" />
             </div>
-<<<<<<< HEAD
-=======
+
+
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
               How Our Smart
               <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient"> AI System </span>
@@ -485,7 +485,6 @@ const testimonials = [
           </div>
         </div>
       </section>
->>>>>>> 27fb3ef9deed040cb7ed4d5a9c52836d21bd45c2
 
             {/* Title & Description */}
             <h3 className="text-lg font-semibold text-gray-900">
@@ -695,7 +694,7 @@ const testimonials = [
     </div>
   </div>
 
-<<<<<<< HEAD
+
   {/* Content */}
   <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
     <div className="max-w-4xl mx-auto space-y-12">
@@ -739,7 +738,7 @@ const testimonials = [
         <div className="text-center">
           <div className="text-4xl font-bold">10+</div>
           <div className="text-gray-300">Smart Cities Connected</div>
-=======
+
             <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               Experience the future of citizen-government interaction through our revolutionary AI-powered platform. 
               Join millions of empowered citizens building smarter, more responsive communities.
@@ -807,7 +806,7 @@ const testimonials = [
             </div>
             <p className="mt-4 text-gray-400">🇮🇳 Building Digital India Together 🇮🇳</p>
           </div>
->>>>>>> 27fb3ef9deed040cb7ed4d5a9c52836d21bd45c2
+
         </div>
         <div className="text-center">
           <div className="text-4xl font-bold">24/7</div>
