@@ -434,58 +434,6 @@ const testimonials = [
             >
               <step.icon className="w-8 h-8 text-white" />
             </div>
-<<<<<<< HEAD
-=======
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
-              How Our Smart
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient"> AI System </span>
-              Works
-            </h2>
-            <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Experience next-generation civic governance through intelligent automation and real-time processing
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {processSteps.map((step, index) => (
-              <div 
-                key={index} 
-                className={``}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20  transition-all">
-                  <div className="text-center space-y-6">
-                    <div className="text-5xl">{step.image}</div>
-                    
-                    <div className="relative">
-                      <div className="text-6xl font-bold text-white/20 absolute -top-4 -right-2">
-                        {step.step}
-                      </div>
-                      <div className={`w-20 h-20 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center shadow-xl  transition-transform mx-auto animate-pulse-glow`}>
-                        <step.icon className="w-10 h-10 text-white" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-4">{step.title}</h3>
-                      <p className="text-gray-300 leading-relaxed">{step.description}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                {index < processSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                      <ArrowRight className="w-5 h-5 text-white" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
->>>>>>> 27fb3ef9deed040cb7ed4d5a9c52836d21bd45c2
 
             {/* Title & Description */}
             <h3 className="text-lg font-semibold text-gray-900">
@@ -695,7 +643,6 @@ const testimonials = [
     </div>
   </div>
 
-<<<<<<< HEAD
   {/* Content */}
   <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
     <div className="max-w-4xl mx-auto space-y-12">
@@ -739,75 +686,6 @@ const testimonials = [
         <div className="text-center">
           <div className="text-4xl font-bold">10+</div>
           <div className="text-gray-300">Smart Cities Connected</div>
-=======
-            <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Experience the future of citizen-government interaction through our revolutionary AI-powered platform. 
-              Join millions of empowered citizens building smarter, more responsive communities.
-            </p>
-          
-            <div className="flex flex-col sm:flex-row gap-6 justify-center pt-12">
-              <button 
-                onClick={() => navigate('/report')}
-                className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden animate-gradient"
-              >
-                
-                <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                <Camera className="w-7 h-7 mr-4 relative z-10" />
-                <span className="relative z-10">Start Reporting Issues</span>
-                <ArrowRight className="w-6 h-6 ml-4 group-hover:translate-x-2 transition-transform relative z-10" />
-              </button>
-              
-              
-              <button className="group glass-morphism text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
-                <Eye className="w-7 h-7 mr-4 group-hover:scale-110 transition-transform" />
-                Explore Live Dashboard
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 pt-16 max-w-3xl mx-auto">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">10+</div>
-                <div className="text-gray-300">Smart Cities Connected</div>
-                <div className="text-2xl mt-2"></div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">24/7</div>
-                <div className="text-gray-300">AI-Powered Support</div>
-                <div className="text-2xl mt-2"></div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">100%</div>
-                <div className="text-gray-300">Secure & Transparent</div>
-                <div className="text-2xl mt-2"></div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 py-8">
-            {["/stempid.jpg", "/potholes.png", "/streetLight.webp", "/cityCleaning.webp"].map((src, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-center bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
-                style={{ width: 300, height: 300 }}
-              >
-                <img
-                  src={src}
-                  alt={`Civic Example ${idx + 1}`}
-                  className="object-cover w-full h-full"
-                  style={{ display: "block" }}
-                />
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-20 text-center">
-            <div className="flex items-center justify-center space-x-3 text-white/75 text-lg">
-              <Shield className="w-5 h-5" />
-              <span>Proudly Secured by Government of Jharkhand</span>
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-            </div>
-            <p className="mt-4 text-gray-400">🇮🇳 Building Digital India Together 🇮🇳</p>
-          </div>
->>>>>>> 27fb3ef9deed040cb7ed4d5a9c52836d21bd45c2
         </div>
         <div className="text-center">
           <div className="text-4xl font-bold">24/7</div>
