@@ -514,17 +514,17 @@ const testimonials = [
 
 
 {/* Government Features Section */}
-<section className="py-24 bg-gray-900 relative overflow-hidden" id="features">
+<section className="py-24 bg-[#dff2f7] relative overflow-hidden" id="features">
   {/* Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10"></div>
+  <div className="absolute inset-0 bg-[#dff2f7]"></div>
 
   <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     {/* Section Heading */}
     <div className="text-center mb-16">
-      <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-        Platform <span className="text-green-400">Features</span>
+      <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
+        Platform <span className="text-red-950">Features</span>
       </h2>
-      <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+      <p className="text-lg text-red-950 max-w-3xl mx-auto leading-relaxed">
         Built to support citizens with transparency, accountability and efficiency.
       </p>
     </div>
@@ -548,7 +548,7 @@ const testimonials = [
             </h3>
 
             {/* Description */}
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-white text-sm leading-relaxed">
               {feature.description}
             </p>
           </div>
@@ -565,11 +565,11 @@ const testimonials = [
   
   <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="text-center mb-20">
-      <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
+      <h2 className="text-5xl md:text-6xl font-bold text-red-950 mb-8">
         Government
         <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent"> Success Stories</span>
       </h2>
-      <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+      <p className="text-2xl text-red-950 max-w-4xl mx-auto leading-relaxed">
         Transforming governance of jharkhand and Citizens Golden review's
       </p>
     </div>
@@ -714,7 +714,7 @@ const testimonials = [
 
 
       
-     <div className="bg-[#f0f6fa] py-16 px-6 md:px-16 lg:px-24 relative overflow-hidden">
+     <div className="bg-[#dff2f7] py-16 px-6 md:px-16 lg:px-24 relative overflow-hidden">
   {/* Section Heading */}
   <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-6 relative inline-block">
     About Us
