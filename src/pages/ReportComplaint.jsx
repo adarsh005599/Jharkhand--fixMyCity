@@ -159,7 +159,7 @@ const ReportComplaint = () => {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center px-4">
+      <div className="min-h-screen  bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-md mx-auto animate-pulse">
           <div className="animate-bounce mb-6">
             <CheckCircle className="mx-auto text-green-500" size={64} />
@@ -192,7 +192,7 @@ const ReportComplaint = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4 animate-pulse">
+          <h1 className="text-4xl lg:text-5xl pt-10 font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4 animate-pulse">
             Report a Complaint
           </h1>
           <p className="text-gray-600 text-lg">Help us make our community safer by reporting incidents</p>
@@ -200,7 +200,7 @@ const ReportComplaint = () => {
 
         <div className="space-y-8">
           {/* Media Upload Section */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
+          <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-blue-100 rounded-xl mr-3">
                 <Camera className="text-blue-600" size={28} />
@@ -293,7 +293,7 @@ const ReportComplaint = () => {
           </div>
 
           {/* Location Section */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
+          <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-green-100 rounded-xl mr-3">
                 <MapPin className="text-green-600" size={28} />
@@ -329,7 +329,7 @@ const ReportComplaint = () => {
           </div>
 
           {/* Reason Section */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
+          <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-purple-100 rounded-xl mr-3">
                 <AlertCircle className="text-purple-600" size={28} />
@@ -376,7 +376,7 @@ const ReportComplaint = () => {
           </div>
 
           {/* Additional Information */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
+          <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-orange-100 rounded-xl mr-3">
                 <FileImage className="text-orange-600" size={28} />
@@ -409,7 +409,7 @@ const ReportComplaint = () => {
           </div>
 
           {/* Terms and Submit */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
+          <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <label className={`flex items-start space-x-3 cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 hover:shadow-lg
               ${errors.terms ? 'border-red-300 bg-red-50' : termsAccepted ? 'border-green-300 bg-green-50' : 'border-gray-200 hover:bg-gray-50'}`}>
               <input

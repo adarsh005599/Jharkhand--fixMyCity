@@ -167,7 +167,7 @@ const PremiumGovCivicPlatform = () => {
 
   const stats = [
     { number: "2,567", label: "Issues Reported", icon: AlertTriangle, color: "from-red-500 via-pink-600 to-purple-700", bg: "from-red-50 to-pink-100" },
-    { number: "1,765", label: "Successfully Resolved", icon: CheckCircle, color: "from-green-500 via-emerald-600 to-teal-700", bg: "from-green-50 to-emerald-100" },
+    { number: "2,234+", label: "Successfully Resolved", icon: CheckCircle, color: "from-green-500 via-emerald-600 to-teal-700", bg: "from-green-50 to-emerald-100" },
     { number: "1,643", label: "Active Citizens", icon: Users, color: "from-blue-500 via-indigo-600 to-purple-700", bg: "from-blue-50 to-indigo-100" },
     { number: "91%", label: "Resolution Rate", icon: TrendingUp, color: "from-purple-500 via-violet-600 to-indigo-700", bg: "from-purple-50 to-violet-100" }
   ];
@@ -267,27 +267,33 @@ const testimonials = [
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
   `}</style>
-
 <section
   className="relative min-h-screen bg-gray-900 flex items-center"
   id="hero"
 >
-  {/* Background Image */}
-  <img
-    src="/min2.jpeg"
-    alt="Jharkhand Digital"
-    className="absolute inset-0 w-full h-full object-cover mt-12 blur-10 opacity-70"
-  />
+  {/* Background Slideshow */}
+  <div className="absolute inset-0 w-full mt-12 h-full overflow-hidden">
+    {["/min2.jpeg", "/hero-img2.avif", "/hero-img5.webp", "/hero-img6.jpg"].map(
+      (src, i) => (
+        <img
+          key={i}
+          src={src}
+          alt={`Jharkhand Digital ${i + 1}`}
+          className="slideshow-img absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-[2000ms]"
+        />
+      )
+    )}
+  </div>
 
-  {/* Dark Overlay for readability */}
+  {/* Dark Overlay */}
   <div className="absolute inset-0 bg-black/40"></div>
 
-  {/* Gradient Overlay (kept from your original) */}
+  {/* Gradient Overlay */}
   <div className="absolute inset-0 bg-gradient-to-r from-gray-500/10 via-blue-500/10 to-gray-500/10">
     <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/10 to-indigo-500/10"></div>
   </div>
 
-  {/* Content */}
+  {/* Content (unchanged) */}
   <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-20">
     <div className="grid lg:grid-cols-2 gap-12 items-center">
       {/* Left side (Text) */}
@@ -299,7 +305,7 @@ const testimonials = [
           </span>
         </div>
 
-        <h1 className="text-3xl lg:text-5xl pb-10  font-bold leading-tight text-white/80">
+        <h1 className="text-3xl lg:text-5xl pb-10 font-bold leading-tight text-white/80">
           Digital Jharkhand <br />
           <span className="text-gray-200">Revolution</span>
         </h1>
@@ -309,9 +315,9 @@ const testimonials = [
           platform. Report issues instantly and track resolutions in real-time.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-6 pt-6 cursor-pointer" >
+        <div className="flex flex-col sm:flex-row gap-6 pt-6 cursor-pointer">
           <button
-              onClick={() => navigate('/report')}
+            onClick={() => navigate("/report")}
             className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center cursor-pointer shadow-lg transition-all"
           >
             <Camera className="w-5 h-5 mr-3" />
@@ -326,7 +332,7 @@ const testimonials = [
 
         <div className="grid grid-cols-3 gap-8 pt-10">
           <div className="text-center">
-            <div className="text-3xl font-bold text-white">1,765+</div>
+            <div className="text-3xl font-bold text-white">2,234+</div>
             <div className="text-gray-200 text-sm">Issues Resolved</div>
           </div>
           <div className="text-center">
@@ -340,16 +346,17 @@ const testimonials = [
         </div>
       </div>
 
-      {/* Right side (Removed standalone image, since it's now background) */}
+      {/* Right side empty (kept for layout) */}
       <div></div>
     </div>
   </div>
 </section>
 
+
 </div>
 
       {/* Premium Stats Section */}
-      <section className="py-24 bg-white relative" id="stats">
+      <section className="py-24 bg-[#f0f6fa]  relative" id="stats">
         <div className="absolute inset-0 bg-gradient-to-r from-gray-500/5 via-blue-500/5 to-gray-500/5"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -358,12 +365,12 @@ const testimonials = [
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Platform Impact Metrics</h2>
             <p className="text-xl text-gray-600">Real-time performance dashboard</p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className={`text-center group cursor-pointer animate-slide-in hover-lift`}
+                className={``}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className={`relative bg-gradient-to-br ${stat.bg} p-8 rounded-3xl shadow-xl transition-all border border-gray-200/50`}>
@@ -378,191 +385,182 @@ const testimonials = [
           </div>
         </div>
       </section>
-      {/* Premium Process Section */}
-      <section className="py-24 bg-gray-900 relative overflow-hidden" id="process">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="text-6xl mb-8"></div>
-            <div className="inline-flex items-center glass-morphism text-white px-6 py-3 rounded-xl font-medium mb-8">
-              <Zap className="w-5 h-5 mr-2" />
-              AI-Powered Workflow
+      {/* Process Section (Gov Style with Image Slots) */}
+<section className="relative py-24 bg-gray-50" id="process">
+  {/* Background with Blur */}
+  <div className="absolute inset-0">
+    <img
+      src="/jh-img.jpg" // Use any Jharkhand gov / civic styled background
+      alt="Government Background"
+      className="w-full h-full opacity-90 object-cover"
+    />
+    <div className="absolute  w-full h-full object-contain md:object-cover object-center mt-12 opacity-70 inset-0 bg-white/10 "></div>
+  </div>
+
+  {/* Content */}
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Header */}
+    <div className="text-center mb-16">
+      {/* Tricolor Strip */}
+      <div className="flex w-40 mx-auto mb-6 rounded overflow-hidden shadow-md">
+        <div className="flex-1 h-2 bg-[#FF9933]"></div>
+        <div className="flex-1 h-2 bg-white"></div>
+        <div className="flex-1 h-2 bg-[#138808]"></div>
+      </div>
+
+      <h2 className="text-4xl   pt-10 md:text-5xl font-bold  text-neutral-700">
+        How Our <span className="text-red-950">AI-Enabled System</span> Works
+      </h2>
+      
+    </div>
+
+    {/* Process Steps */}
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+      {processSteps.map((step, index) => (
+        <div
+          key={index}
+          className="bg-white/90 border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all backdrop-blur-sm"
+        >
+          <div className="text-center space-y-6">
+            {/* Step Number */}
+            <div className="text-5xl font-bold text-gray-300">{step.step}</div>
+
+            {/* Icon */}
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center mx-auto shadow-md"
+              style={{
+                backgroundColor: index % 2 === 0 ? "#FF9933" : "#138808",
+              }}
+            >
+              <step.icon className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
-              How Our Smart
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient"> AI System </span>
-              Works
-            </h2>
-            <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Experience next-generation civic governance through intelligent automation and real-time processing
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {processSteps.map((step, index) => (
-              <div 
-                key={index} 
-                className={`relative group animate-slide-in hover-lift`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20  transition-all">
-                  <div className="text-center space-y-6">
-                    <div className="text-5xl">{step.image}</div>
-                    
-                    <div className="relative">
-                      <div className="text-6xl font-bold text-white/20 absolute -top-4 -right-2">
-                        {step.step}
-                      </div>
-                      <div className={`w-20 h-20 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center shadow-xl  transition-transform mx-auto animate-pulse-glow`}>
-                        <step.icon className="w-10 h-10 text-white" />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-4">{step.title}</h3>
-                      <p className="text-gray-300 leading-relaxed">{step.description}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                {index < processSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                      <ArrowRight className="w-5 h-5 text-white" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Premium Issue Categories */}
-      <section className="py-24 bg-white relative" id="categories">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-blue-500/5 to-cyan-500/5"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="text-6xl mb-8"></div>
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
-              Smart Civic
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent"> Categories </span>
-              Hub
-            </h2>
-            <p className="text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Comprehensive issue categorization powered by AI for precise reporting and rapid resolution
+            {/* Title & Description */}
+            <h3 className="text-lg font-semibold text-gray-900">
+              {step.title}
+            </h3>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {step.description}
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {issueCategories.map((category, index) => (
-              <div 
-                key={index} 
-                className={``}
-                style={{ animationDelay: `${index * 100}ms` }}
-                onMouseEnter={() => setActiveCard(index)}
-                onMouseLeave={() => setActiveCard(null)}
-              >
-                <div className={`relative bg-gradient-to-br ${category.bgGradient} rounded-3xl p-8 shadow-xl  transition-all border border-gray-200/50  premium-shadow`}>
-                  <div className="absolute inset-0 bg-white/50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="text-5xl">{category.image}</div>
-                      <div className="text-right text-sm">
-                        <div className="font-bold text-gray-700 mb-1">{category.stats}</div>
-                        <div className="flex items-center text-green-600">
-                          <CheckCircle className="w-3 h-3 mr-1" />
-                          <span className="text-xs">{category.impact}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={`w-18 h-18 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center mb-8 shadow-2xl  transition-all animate-pulse-glow`}>
-                      <category.icon className="w-9 h-9 text-white" />
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-4  transition-colors">
-                        {category.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed mb-8">
-                        {category.description}
-                      </p>
-                      
-                      <button 
-                        onClick={() => navigate('/report')}
-                        className="w-full bg-white/80  border-2 border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-600 px-6 py-4 rounded-2xl font-bold transition-all flex items-center justify-center group-hover:shadow-xl transform hover:scale-105"
-                      >
-                        <Camera className="w-5 h-5 mr-3" />
-                        Report Issue
-                        <ArrowRight className="w-5 h-5 ml-auto group-hover:translate-x-1 transition-transform" />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {/* Floating accent */}
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-r from-blue-400/30 to-blue-500/30 rounded-full animate-pulse"></div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
-      </section>
+      ))}
+    </div>
 
-      {/* Premium Features Section */}
-      <section className="py-24 bg-gray-900 relative overflow-hidden" id="features">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="text-6xl mb-8"></div>
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
-              Next-Generation
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-400 bg-clip-text text-transparent animate-gradient"> Platform Features</span>
-            </h2>
-            <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Advanced technology stack designed for enterprise-grade performance and citizen satisfaction
+   
+  </div>
+</section>
+
+
+     
+  {/* Issue Categories (Gov Style with Tricolor Banner) */}
+<section className="py-24 bg-[#f0f6fa] relative" id="categories">
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Header with Tricolor Banner */}
+    <div className="text-center mb-16">
+      {/* 🇮🇳 Tricolor Banner */}
+      <div className="flex w-40 mx-auto mb-6 rounded overflow-hidden shadow-sm">
+        <div className="flex-1 h-2 bg-[#FF9933]"></div> {/* Saffron */}
+        <div className="flex-1 h-2 bg-white"></div>     {/* White */}
+        <div className="flex-1 h-2 bg-[#138808]"></div> {/* Green */}
+      </div>
+
+      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        Citizen Service <span className="text-[#000080]">Categories</span>
+      </h2>
+      <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
+        Officially recognized issue categories to help citizens report and track
+        urban problems effectively.
+      </p>
+    </div>
+
+    {/* Categories Grid */}
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {issueCategories.map((category, index) => (
+        <div
+          key={index}
+          className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
+        >
+          {/* Icon with Indian flag accents */}
+          <div
+            className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#FF9933" : "#138808",
+            }}
+          >
+            <category.icon className="w-7 h-7 text-white" />
+          </div>
+
+          {/* Title & Description */}
+          <h3 className="text-xl font-semibold text-gray-900 mb-3">
+            {category.title}
+          </h3>
+          <p className="text-gray-700 text-sm leading-relaxed mb-6">
+            {category.description}
+          </p>
+
+          {/* Official-style button */}
+          <button
+            onClick={() => navigate("/report")}
+            className="w-full bg-[#000080] text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-900 transition-colors"
+          >
+            Report Issue
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+
+{/* Government Features Section */}
+<section className="py-24 bg-gray-900 relative overflow-hidden" id="features">
+  {/* Gradient Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-blue-600/10"></div>
+
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Section Heading */}
+    <div className="text-center mb-16">
+      <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+        Platform <span className="text-green-400">Features</span>
+      </h2>
+      <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        Built to support citizens with transparency, accountability and efficiency.
+      </p>
+    </div>
+
+    {/* Features Grid */}
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+      {governmentFeatures.map((feature, index) => (
+        <div
+          key={index}
+          className="bg-gray-800/80 rounded-xl p-8 shadow border border-gray-700 hover:border-green-500 transition-all"
+        >
+          <div className="flex flex-col items-center text-center space-y-5">
+            {/* Icon */}
+            <div className={`w-14 h-14 bg-gradient-to-r ${feature.color} rounded-md flex items-center justify-center shadow`}>
+              <feature.icon className="w-7 h-7 text-white" />
+            </div>
+
+            {/* Title */}
+            <h3 className="text-lg font-semibold text-white">
+              {feature.title}
+            </h3>
+
+            {/* Description */}
+            <p className="text-gray-400 text-sm leading-relaxed">
+              {feature.description}
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {governmentFeatures.map((feature, index) => (
-              <div 
-                key={index} 
-                className={``}
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="glass-morphism rounded-3xl p-8 shadow-2xl border border-white/20  transition-all group premium-shadow">
-                  <div className="text-center space-y-6">
-                    <div className="text-5xl">{feature.image}</div>
-                    
-                    <div className={`w-18 h-18 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center shadow-2xl  transition-all mx-auto animate-pulse-glow`}>
-                      <feature.icon className="w-9 h-9 text-white" />
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-4 transition-colors">
-                        {feature.title}
-                      </h3>
-                      <p className="text-gray-300 leading-relaxed">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Glowing border effect */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-blue-500/20 to-blue-500/20 opacity-0  transition-opacity blur-sm"></div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Premium Testimonials */}
-<section className="py-24 bg-white relative" id="testimonials">
+<section className="py-24 bg-[#f0f6fa] relative" id="testimonials">
   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-blue-500/5 to-cyan-500/5"></div>
   
   <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -604,7 +602,7 @@ const testimonials = [
                   </div>
                 </div>
               </div>
-            
+    
               {/* ✅ Rating */}
               <div className="flex justify-center mb-6">
                 {[...Array(testimonial.rating)].map((_, i) => (
@@ -628,98 +626,146 @@ const testimonials = [
   </div>
 </section>
 
-      {/* Premium CTA Section */}
-      <section className="py-24 relative  bg-gray-900  overflow-hidden" id="cta">
-        <div className="absolute inset-0 ">
-          <div className="absolute inset-0  bg-gray-900"></div>
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(120, 119, 198, 0.3) 0%, transparent 50%)'
-          }}></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="max-w-4xl mx-auto space-y-12">
-            <div className="text-7xl mb-8"></div>
-            
-            <div className="inline-flex items-center glass-morphism text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl">
-              <Sparkles className="w-6 h-6 mr-3" />
-              Join the Digital Governance Revolution
-            </div>
-            
-            <h2 className="text-5xl md:text-7xl font-bold text-white leading-tight">
-              Transform Your
-              <br />
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
-                Community Today
-              </span>
-            </h2>
+{/* Premium CTA Section with Background Slideshow */}
+<section className="relative py-24 bg-gray-900 overflow-hidden" id="cta">
+  {/* Background Slideshow */}
+  <div className="absolute inset-0 w-full h-full">
+    <div className="absolute inset-0 bg-black/60 z-10"></div> {/* dark overlay for text readability */}
+    <div className="slideshow absolute inset-0 w-full h-full">
+      {["/stempid.jpg", "/potholes.png", "/streetLight.webp", "/cityCleaning.webp"].map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          alt={`Gov Civic Example ${i + 1}`}
+          className="slideshow-img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[2000ms]"
+        />
+      ))}
+    </div>
+  </div>
 
-            <p className="text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Experience the future of citizen-government interaction through our revolutionary AI-powered platform. 
-              Join millions of empowered citizens building smarter, more responsive communities.
-            </p>
-          
-            <div className="flex flex-col sm:flex-row gap-6 justify-center pt-12">
-              <button 
-                onClick={() => navigate('/report')}
-                className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden animate-gradient"
-              >
-                <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                <Camera className="w-7 h-7 mr-4 relative z-10" />
-                <span className="relative z-10">Start Reporting Issues</span>
-                <ArrowRight className="w-6 h-6 ml-4 group-hover:translate-x-2 transition-transform relative z-10" />
-              </button>
-              
-              <button className="group glass-morphism text-white px-16 py-6 rounded-2xl font-bold text-2xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
-                <Eye className="w-7 h-7 mr-4 group-hover:scale-110 transition-transform" />
-                Explore Live Dashboard
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 pt-16 max-w-3xl mx-auto">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">10+</div>
-                <div className="text-gray-300">Smart Cities Connected</div>
-                <div className="text-2xl mt-2"></div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">24/7</div>
-                <div className="text-gray-300">AI-Powered Support</div>
-                <div className="text-2xl mt-2"></div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">100%</div>
-                <div className="text-gray-300">Secure & Transparent</div>
-                <div className="text-2xl mt-2"></div>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 py-8">
-            {["/stempid.jpg", "/potholes.png", "/streetLight.webp", "/cityCleaning.webp"].map((src, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-center bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
-                style={{ width: 300, height: 300 }}
-              >
-                <img
-                  src={src}
-                  alt={`Civic Example ${idx + 1}`}
-                  className="object-cover w-full h-full"
-                  style={{ display: "block" }}
-                />
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-20 text-center">
-            <div className="flex items-center justify-center space-x-3 text-white/75 text-lg">
-              <Shield className="w-5 h-5" />
-              <span>Proudly Secured by Government of Jharkhand</span>
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
-            </div>
-            <p className="mt-4 text-gray-400">🇮🇳 Building Digital India Together 🇮🇳</p>
-          </div>
+  {/* Content */}
+  <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+    <div className="max-w-4xl mx-auto space-y-12">
+      <div className="inline-flex items-center bg-white/10 backdrop-blur-md text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl">
+        <Sparkles className="w-6 h-6 mr-3 text-blue-300" />
+        Join the Digital Governance Revolution
+      </div>
+
+      <h2 className="text-5xl md:text-7xl font-bold leading-tight">
+        Transform Your
+        <br />
+        <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
+          Community Today
+        </span>
+      </h2>
+
+      <p className="text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        Experience the future of citizen-government interaction through our AI-powered platform. 
+        Join millions of empowered citizens building smarter, more transparent communities.
+      </p>
+
+      <div className="flex flex-col sm:flex-row gap-6 justify-center pt-12">
+        <button 
+          onClick={() => navigate('/report')}
+          className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          <Camera className="w-6 h-6 mr-3 relative z-10" />
+          <span className="relative z-10">Start Reporting Issues</span>
+          <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform relative z-10" />
+        </button>
+
+        <button className="group bg-white/10 backdrop-blur-md text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
+          <Eye className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+          Explore Live Dashboard
+        </button>
+      </div>
+
+      {/* Trust Signals */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 pt-16 max-w-3xl mx-auto">
+        <div className="text-center">
+          <div className="text-4xl font-bold">10+</div>
+          <div className="text-gray-300">Smart Cities Connected</div>
         </div>
-      </section>
+        <div className="text-center">
+          <div className="text-4xl font-bold">24/7</div>
+          <div className="text-gray-300">AI-Powered Support</div>
+        </div>
+        <div className="text-center">
+          <div className="text-4xl font-bold">100%</div>
+          <div className="text-gray-300">Secure & Transparent</div>
+        </div>
+      </div>
+
+      {/* Footer Tag */}
+      <div className="mt-16 text-center">
+        <div className="flex items-center justify-center space-x-3 text-white/80 text-lg">
+          <Shield className="w-5 h-5 text-green-400" />
+          <span>Proudly Secured by Government of Jharkhand</span>
+          <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+        </div>
+        <p className="mt-4 text-gray-400">🇮🇳 Building Digital India Together 🇮🇳</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      
+     <div className="bg-[#f0f6fa] py-16 px-6 md:px-16 lg:px-24 relative overflow-hidden">
+  {/* Section Heading */}
+  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-6 relative inline-block">
+    About Us
+    <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 border-b-4 border-green-600"></span>
+  </h2>
+
+  {/* Description */}
+  <p className="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto text-center mt-4">
+    <span className="font-semibold">FixMyCity</span> is an official civic platform 
+    initiated under the guidance of the{" "}
+    <span className="font-semibold text-green-700">Government of Jharkhand</span>.  
+    Our mission is to strengthen citizen–government collaboration by enabling 
+    transparent, fast, and accountable redressal of urban issues.
+  </p>
+
+  {/* Vision / Mission / Values */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 text-center">
+    <div className="bg-white p-6 rounded-2xl shadow-md border-t-4 border-green-600">
+      <h3 className="text-xl font-semibold text-green-700 mb-3">Our Vision</h3>
+      <p className="text-gray-600 text-base">
+        To build a cleaner, safer, and more responsive Jharkhand 
+        by empowering citizens to directly report civic concerns.
+      </p>
+    </div>
+    <div className="bg-white p-6 rounded-2xl shadow-md border-t-4 border-green-600">
+      <h3 className="text-xl font-semibold text-green-700 mb-3">Our Mission</h3>
+      <p className="text-gray-600 text-base">
+        To provide an accessible digital platform for every resident 
+        to raise issues and ensure timely resolution through 
+        official government channels.
+      </p>
+    </div>
+    <div className="bg-white p-6 rounded-2xl shadow-md border-t-4 border-green-600">
+      <h3 className="text-xl font-semibold text-green-700 mb-3">Our Values</h3>
+      <p className="text-gray-600 text-base">
+        Transparency, accountability, inclusivity, and service to citizens — 
+        the guiding principles of our governance model.
+      </p>
+    </div>
+  </div>
+
+  {/* Jharkhand Government Branding */}
+  <div className="flex items-center justify-center mt-14">
+    <div className="flex items-center space-x-4 bg-white px-6 py-3 rounded-xl shadow border border-gray-200">
+      <img src="/Jharkhand-logo.webp" alt="Jharkhand Logo" className="w-14 h-14" />
+      <span className="text-lg font-semibold text-gray-900">
+        Government of Jharkhand
+      </span>
+    </div>
+  </div>
+</div>
+
+
     </div>
   );
 };

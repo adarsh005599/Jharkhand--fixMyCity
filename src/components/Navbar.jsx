@@ -65,7 +65,7 @@ useEffect(() => {
         <Link to="/">
           <div className="LogoGroup flex items-center gap-3">
             <img className="logo h-8 lg:h-12 drop-shadow-lg" src={Logo} />
-            <h2 className="font-bold text-sm animate-typing whitespace-nowrap overflow-hidden lg:text-lg">
+            <h2 className="font-bold text-red-900 text-sm animate-typing whitespace-nowrap overflow-hidden lg:text-lg">
               FixMyCity
             </h2>
           </div>

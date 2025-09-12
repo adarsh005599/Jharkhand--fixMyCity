@@ -4,6 +4,7 @@ import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
+  // hard coded the API for the loacal testing. during need to use the env file
   apiKey: "AIzaSyA2oL5-ODl5ICXEjwHCUwaMdQKjSG4iELc",
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,

@@ -9,7 +9,7 @@ import { handleLoginOrRegisterOfficial, isOfficial } from "../utils/FirebaseFunc
 const OfficialLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const [err, setErr] = useState("");
+  const [err, setErr] = useState(""); 
   const [spinner, setSpinner] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
 
@@ -20,7 +20,7 @@ const OfficialLogin = () => {
         const officialOrNot = await isOfficial(user.uid);
         if (officialOrNot) navigate("/official-dashboard");
         else await auth.signOut();
-      }
+      } 
     });
     return () => unsubscribe();
   }, [navigate]);
