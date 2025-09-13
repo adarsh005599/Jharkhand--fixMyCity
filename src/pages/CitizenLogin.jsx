@@ -5,6 +5,7 @@ import { TextField } from "../components/RegisterAccount";
 import { auth } from "../utils/Firebase";
 import { loginCitizen } from "../utils/FirebaseFunctions";
 import SpinnerModal from "../components/SpinnerModal";
+import ComradeAIWidget from "../components/ComradeAIWidget";
 
 const CitizenLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -128,6 +129,7 @@ const CitizenLogin = () => {
           </Button>
         </form>
       </div>
+      <ComradeAIWidget/>
     </div>
   );
 };

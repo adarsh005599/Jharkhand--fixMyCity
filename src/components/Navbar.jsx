@@ -104,17 +104,17 @@ useEffect(() => {
           }}
         />
       </div>
-
+ 
       {/* Mobile Menu */}
-      <div
-        className={`MenuMobile lg:hidden w-full text-center py-20 absolute bg-gradient-to-b from-white to-sky-50 z-10 rounded-3xl shadow-lg transition-all duration-500 ${
+      <div 
+        className={`MenuMobile lg:hidden w-full text-center py-20 absolute bg-gradient-to-b from-black to-sky-200  z-10  cursor-pointer rounded-3xl  transition-all duration-500 ${
           Visible ? "block" : "hidden"
         }`}
       >
         <ul className="flex flex-col gap-10 font-bold text-lg">
           {User ? (
             <>
-              <Link
+              <Link 
                 to={Official ? "/official-dashboard" : "/citizen-dashboard"}
                 className="text-sky-700 hover:text-emerald-700 transition"
               >

@@ -310,7 +310,7 @@ const testimonials = [
           <span className="text-gray-200">Revolution</span>
         </h1>
 
-        <p className="text-lg text-gray-200 leading-relaxed font-light max-w-xl">
+        <p className="text-lg text-white leading-relaxed font-light max-w-xl">
           Experience the future of civic engagement through our AI-powered
           platform. Report issues instantly and track resolutions in real-time.
         </p>
@@ -318,7 +318,7 @@ const testimonials = [
         <div className="flex flex-col sm:flex-row gap-6 pt-6 cursor-pointer">
           <button
             onClick={() => navigate("/report")}
-            className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center cursor-pointer shadow-lg transition-all"
+            className="bg-blue-700 hover:bg-blue-800 hover:scale-105 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center cursor-pointer shadow-lg transition-all"
           >
             <Camera className="w-5 h-5 mr-3" />
             Report Issue

@@ -1,5 +1,18 @@
 // firebaseHelpers.js
 
+import { 
+  doc, 
+  getDoc, 
+  setDoc, 
+  collection,   // ✅ add this
+  addDoc,       // if you use addDoc for complaints
+  onSnapshot,   // if you use real-time listeners
+  query,        // if you use queries
+  where,        // if you use filters
+  getDocs       // if you fetch documents
+} from "firebase/firestore";
+
+
 import { auth, db } from "./Firebase";
 import {
   browserLocalPersistence,
@@ -8,7 +21,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+// import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const userTypes = { official: "official", citizen: "citizen" };
 
@@ -143,32 +156,42 @@ export const loginCitizen = async (formData) => {
     throw new Error(error.message);
   }
 };
-
 /* ----------------------- COMPLAINTS ----------------------- */
 export const createComplaint = async (formData, media) => {
-  const timestamp = Date.now();
-
-  // Ensure safe file extension
-  const ext = media.name.includes(".") ? media.name.split(".").pop() : "jpg";
-  const fileName = `complaints/${timestamp}.${ext}`;
-  const fileRef = ref(storage, fileName);
-
   try {
-    await uploadBytes(fileRef, media);
-    const fileLink = await getDownloadURL(fileRef);
+    let mediaPath = "";
 
+    // Upload media if exists
+    if (media) {
+      const data = new FormData();
+      data.append("file", media);
+
+      const res = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: data,
+      });
+
+      const uploaded = await res.json();
+      if (!uploaded.url) throw new Error("Upload to Cloudinary failed");
+
+      mediaPath = uploaded.url;
+    }
+
+    // Save complaint in Firestore
     const updatedFormData = {
       ...formData,
-      timestamp,
-      mediaPath: fileLink,
+      timestamp: Date.now(),
+      mediaPath, // Cloudinary URL or empty string
       status: Statuses.pending,
     };
 
     await addDoc(collection(db, "complaints"), updatedFormData);
   } catch (error) {
+    console.error("Error creating complaint:", error);
     throw new Error(error.message);
   }
 };
+
 
 export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
   const complaintsRef = collection(db, "complaints");
@@ -200,6 +223,7 @@ export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
     handleComplaintsUpdate(complaints);
   });
 };
+
 export const fetchComplaints = (handleComplaintsUpdate) => {
   const complaintsCollection = collection(db, "complaints");
 

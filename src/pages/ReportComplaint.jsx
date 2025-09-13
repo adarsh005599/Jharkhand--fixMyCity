@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Camera, MapPin, Upload, X, CheckCircle, AlertCircle, FileImage, Video } from 'lucide-react';
+import axios from 'axios';
 
 const ReportComplaint = () => {
   const [media, setMedia] = useState(null);
@@ -44,29 +45,51 @@ const ReportComplaint = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFileSelect = (file) => {
-    if (!file) return;
-    
-    const maxSize = 50 * 1024 * 1024; // 50MB
-    if (file.size > maxSize) {
-      setErrors({...errors, media: "File size must be less than 50MB"});
-      return;
-    }
-    
-    const allowedTypes = ['image/', 'video/'];
-    if (!allowedTypes.some(type => file.type.startsWith(type))) {
-      setErrors({...errors, media: "Please upload only images or videos"});
-      return;
-    }
-    
+const handleFileSelect = async (file) => {
+  if (!file) return;
+
+  const maxSize = 50 * 1024 * 1024; // 50MB
+  if (file.size > maxSize) {
+    setErrors({ ...errors, media: "File size must be less than 50MB" });
+    return;
+  }
+
+  const allowedTypes = ["image/", "video/"];
+  if (!allowedTypes.some((type) => file.type.startsWith(type))) {
+    setErrors({ ...errors, media: "Please upload only images or videos" });
+    return;
+  }
+
+  setLoaderVisible(true); // show loader while uploading
+
+  try {
+    const formDataUpload = new FormData();
+    formDataUpload.append("file", file);
+    formDataUpload.append("upload_preset", "fixMyCity_preset"); 
+    formDataUpload.append("cloud_name", "dnkuwjegy");
+
+    const res = await axios.post(
+      `https://api.cloudinary.com/v1_1/dnkuwjegy/upload`,
+      formDataUpload
+    );
+
+    const uploadedUrl = res.data.secure_url;
+
     setMedia(file);
+    setMediaPath(uploadedUrl); // ✅ use Cloudinary URL, not local
     setFormData({
       ...formData,
       mediaType: file.type.split("/")[0],
+      mediaPath: uploadedUrl, // ✅ store it in formData
     });
-    setMediaPath(URL.createObjectURL(file));
-    setErrors({...errors, media: null});
-  };
+    setErrors({ ...errors, media: null });
+  } catch (err) {
+    setErrors({ ...errors, media: "Failed to upload file. Try again." });
+  } finally {
+    setLoaderVisible(false);
+  }
+};
+
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -159,7 +182,7 @@ const ReportComplaint = () => {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen  bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center px-4">
+      <div className="min-h-screen  bg-[#dff2f7] flex items-center justify-center px-4">
         <div className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-md mx-auto animate-pulse">
           <div className="animate-bounce mb-6">
             <CheckCircle className="mx-auto text-green-500" size={64} />
@@ -178,13 +201,13 @@ const ReportComplaint = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 py-8 px-4">
+    <div className="min-h-screen bg-[#dff2f7]  py-8 px-4">
       {/* Loading Overlay */}
       {loaderVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center shadow-2xl animate-pulse">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-            <p className="text-gray-700 font-medium">Processing your complaint...</p>
+            <p className="text-gray-700 font-medium">Wait Adding...</p>
           </div>
         </div>
       )}
