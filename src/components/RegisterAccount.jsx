@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { registerCitizen } from "../utils/FirebaseFunctions";
 import SpinnerModal from "../components/SpinnerModal";
 import CivicReportingPlatform from "./CivicReportingPlatform";
-import ChatBotWidget from "./ChatBotWidget";
+
 
 // Styled TextField
 export const TextField = styled(MuiTextField)(() => ({
@@ -180,7 +180,7 @@ const RegisterAccount = () => {
           </form>
         </div>
       )}
-      <ChatBotWidget/>
+      {/* <ChatBotWidget/> */}
     </div>
   );
 };

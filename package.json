@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -19,6 +22,7 @@
     "@mui/material": "^5.13.3",
     "@mui/x-data-grid": "^6.5.0",
     "axios": "^1.4.0",
+    "cloudinary-react": "^1.8.1",
     "clsx": "^1.2.1",
     "dotenv": "^17.2.2",
     "fa": "^1.0.1",

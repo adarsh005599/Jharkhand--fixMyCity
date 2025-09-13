@@ -70,7 +70,7 @@ const CitizenDashboard = () => {
   return (
     <div
       style={{
-        backgroundColor: "#eff6ff",
+        backgroundColor: "#dff2f7",
         minHeight: "100vh",
         paddingTop: "90px", // ✅ prevents overlap with navbar
       }}
