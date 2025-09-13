@@ -5,6 +5,7 @@ import { TextField } from "../components/RegisterAccount";
 import { auth } from "../utils/Firebase";
 import SpinnerModal from "../components/SpinnerModal";
 import { handleLoginOrRegisterOfficial, isOfficial } from "../utils/FirebaseFunctions";
+import ComradeAIWidget from "../components/ComradeAIWidget";
 
 const OfficialLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -133,6 +134,7 @@ const OfficialLogin = () => {
           </Button>
         </form>
       </div>
+      <ComradeAIWidget/>
     </div>
   );
 };
