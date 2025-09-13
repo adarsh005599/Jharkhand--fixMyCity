@@ -16,6 +16,7 @@ export const TextField = styled(MuiTextField)(() => ({
   },
 }));
 
+
 const RegisterAccount = () => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
