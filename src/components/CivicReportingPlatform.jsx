@@ -315,14 +315,22 @@ const testimonials = [
           Experience the future of civic engagement through our AI-powered
           platform. Report issues instantly and track resolutions in real-time.
         </p>
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6">
-  <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
-    <MapPin className="w-5 h-5 text-green-400 mt-1" />
-    <div>
-      <p className="text-white font-semibold text-sm">Coverage Across Jharkhand</p>
-      <p className="text-gray-200 text-xs">All major cities and districts included</p>
-    </div>
+
+<div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+  <Clock className="w-5 h-5 text-yellow-400 mt-1" />
+  <div>
+    <p className="text-white font-semibold text-sm">Citizen-Centric Services</p>
+    <p className="text-gray-200 text-xs">Simplifying access to government facilities for all residents</p>
   </div>
+</div>
+
+<div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+  <Clock className="w-5 h-5 text-yellow-400 mt-1" />
+  <div>
+    <p className="text-white font-semibold text-sm">Transparent Governance</p>
+    <p className="text-gray-200 text-xs">Ensuring accountability and efficiency across Jharkhand</p>
+  </div>
+</div>
 
   <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
     <Clock className="w-5 h-5 text-yellow-400 mt-1" />
