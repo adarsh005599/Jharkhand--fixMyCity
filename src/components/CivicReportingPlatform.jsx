@@ -316,7 +316,8 @@ const testimonials = [
           platform. Report issues instantly and track resolutions in real-time.
         </p>
 
-<div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+
+        <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
   <Clock className="w-5 h-5 text-yellow-400 mt-1" />
   <div>
     <p className="text-white font-semibold text-sm">Citizen-Centric Services</p>
