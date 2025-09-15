@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Complaints collection
+    match /complaints/{complaintId} {
+      // Citizens can create complaints if logged in
+      allow create: if request.auth != null;
+
+      // Citizens can read only their own complaints
+      allow read: if request.auth != null && 
+                  resource.data.authorId == request.auth.uid;
+
+      // Officials can read all complaints
+      allow read: if request.auth != null && 
+                  get(/databases/$(database)/documents/users/$(request.auth.uid)).data.type == "official";
+
+      // (Optional) Officials can update status
+      allow update: if request.auth != null && 
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)).data.type == "official";
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

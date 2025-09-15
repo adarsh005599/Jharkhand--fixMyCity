@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { MessageCircle, X } from "lucide-react"; // Chat & Close icons
 
-const ComradeAIWidget = ({ url = "https://comrade-ai.vercel.app/", width = 400, height = 600 }) => {
+const ComradeAIWidget = ({ url = "https://comrade-ai.onrender.com/", width = 400, height = 600 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+
+  
   return (
     <>
       {/* Floating Chat Button */}

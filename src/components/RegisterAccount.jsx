@@ -64,7 +64,7 @@ const RegisterAccount = () => {
         <div className="absolute inset-0 flex items-end z-10">
   <p
   className="text-base font-semibold text-white px-5 py-2  rounded-xl cursor-pointer 
-             bg-blue-600/40 hover:bg-blue-700 transition-colors duration-300"
+             bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
   onClick={() => setShowForm(true)}
 >
   Register
