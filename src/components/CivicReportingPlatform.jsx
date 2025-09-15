@@ -519,7 +519,7 @@ const testimonials = [
 
           {/* Official-style button */}
           <button
-            onClick={() => navigate("/report")}
+            onClick={() => navigate("/citizen-login")}
             className="w-full bg-[#000080] text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-900 transition-colors"
           >
             Report Issue
@@ -684,7 +684,7 @@ const testimonials = [
 
       <div className="flex flex-col sm:flex-row gap-6 justify-center pt-12">
         <button 
-          onClick={() => navigate('/report')}
+          onClick={() => navigate('/citizen-login')}
           className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -693,7 +693,7 @@ const testimonials = [
           <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform relative z-10" />
         </button>
 
-        <button className="group bg-white/10 backdrop-blur-md text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
+        <button onClick={() => navigate('/')} className="group bg-white/10 backdrop-blur-md text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
           <Eye className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
           Explore Live Dashboard
         </button>
