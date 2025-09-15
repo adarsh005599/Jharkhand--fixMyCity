@@ -2,10 +2,11 @@ import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "../components/RegisterAccount";
-import { auth } from "../utils/Firebase";
 import { loginCitizen } from "../utils/FirebaseFunctions";
 import SpinnerModal from "../components/SpinnerModal";
 import ComradeAIWidget from "../components/ComradeAIWidget";
+import { auth, db } from "../utils/Firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const CitizenLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -13,17 +14,34 @@ const CitizenLogin = () => {
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
-  // Check if citizen already logged in
+  /* ----------------- Auto redirect if already logged in ----------------- */
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const userRef = await loginCitizen({ email: user.email, password: "dummy" }).catch(() => null);
-        if (userRef?.citizen) navigate("/citizen-dashboard");
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            if (userData.type === "citizen") {
+              navigate("/citizen-dashboard");
+            } else {
+              await auth.signOut();
+            }
+          } else {
+            await auth.signOut();
+          }
+        } catch (error) {
+          console.error("Auth check failed:", error);
+          await auth.signOut();
+        }
       }
     });
     return () => unsubscribe();
   }, [navigate]);
 
+  /* ----------------- Manual login ----------------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSpinner(true);
@@ -46,14 +64,14 @@ const CitizenLogin = () => {
   };
 
   return (
-    <div
-      className="h-screen w-screen flex items-center justify-center overflow-y-auto"
-      style={{ backgroundColor: "#eff6ff" }}
-    >
+    <div className="h-screen w-screen flex items-center justify-center overflow-y-auto bg-gradient-to-br from-sky-100 to-blue-50 relative">
+      {/* Pattern Overlay */}
+      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(135deg,#00000011_25%,transparent_25%,transparent_50%,#00000011_50%,#00000011_75%,transparent_75%,transparent)] bg-[length:20px_20px]"></div>
+
       <SpinnerModal visible={spinner} />
 
       {/* Card */}
-      <div className="w-[90%] sm:w-[400px]  bg-gradient-to-r from-teal-700/70 to-sky-600/70  rounded-2xl shadow-xl p-8 flex flex-col items-center">
+      <div className="w-[90%] sm:w-[400px] bg-gradient-to-r from-teal-700/70 to-sky-600/70 rounded-2xl shadow-xl p-8 flex flex-col items-center">
         {/* User icon */}
         <div className="bg-blue-900 text-white rounded-full w-16 h-16 flex items-center justify-center -mt-14 mb-6">
           <svg
@@ -63,7 +81,12 @@ const CitizenLogin = () => {
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A9 9 0 1118.364 4.561 9 9 0 015.121 17.804z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5.121 17.804A9 9 0 1118.364 4.561 9 9 0 015.121 17.804z"
+            />
           </svg>
         </div>
 
@@ -76,11 +99,17 @@ const CitizenLogin = () => {
             placeholder="Email ID"
             type="email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             required
             disabled={spinner}
             InputProps={{
-              style: { backgroundColor: "#1E2A47", color: "white", borderRadius: "8px" },
+              style: {
+                backgroundColor: "#1E2A47",
+                color: "white",
+                borderRadius: "8px",
+              },
             }}
             InputLabelProps={{
               style: { color: "#bbb" },
@@ -93,11 +122,17 @@ const CitizenLogin = () => {
             placeholder="Password"
             type="password"
             value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
             required
             disabled={spinner}
             InputProps={{
-              style: { backgroundColor: "#1E2A47", color: "white", borderRadius: "8px" },
+              style: {
+                backgroundColor: "#1E2A47",
+                color: "white",
+                borderRadius: "8px",
+              },
             }}
             InputLabelProps={{
               style: { color: "#bbb" },
@@ -129,7 +164,7 @@ const CitizenLogin = () => {
           </Button>
         </form>
       </div>
-      <ComradeAIWidget/>
+      <ComradeAIWidget />
     </div>
   );
 };

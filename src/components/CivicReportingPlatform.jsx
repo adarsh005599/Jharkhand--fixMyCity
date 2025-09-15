@@ -23,6 +23,7 @@ import {
   Target,
   Sparkles,
   Settings,
+  Clock,
   Layers,
   BarChart3,
   Smartphone,
@@ -314,21 +315,32 @@ const testimonials = [
           Experience the future of civic engagement through our AI-powered
           platform. Report issues instantly and track resolutions in real-time.
         </p>
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6">
+  <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+    <MapPin className="w-5 h-5 text-green-400 mt-1" />
+    <div>
+      <p className="text-white font-semibold text-sm">Coverage Across Jharkhand</p>
+      <p className="text-gray-200 text-xs">All major cities and districts included</p>
+    </div>
+  </div>
 
-        <div className="flex flex-col sm:flex-row gap-6 pt-6 cursor-pointer">
-          <button
-            onClick={() => navigate("/report")}
-            className="bg-blue-700 hover:bg-blue-800 hover:scale-105 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center cursor-pointer shadow-lg transition-all"
-          >
-            <Camera className="w-5 h-5 mr-3" />
-            Report Issue
-          </button>
+  <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+    <Clock className="w-5 h-5 text-yellow-400 mt-1" />
+    <div>
+      <p className="text-white font-semibold text-sm">Real-Time Updates</p>
+      <p className="text-gray-200 text-xs">Track services and reports instantly</p>
+    </div>
+  </div>
 
-          <button className="bg-gray-700/40 hover:bg-gray-600/50 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center shadow-lg transition-all">
-            <Play className="w-5 h-5 mr-3" />
-            Watch Demo
-          </button>
-        </div>
+  <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+    <Star className="w-5 h-5 text-indigo-400 mt-1" />
+    <div>
+      <p className="text-white font-semibold text-sm">High Success Rate</p>
+      <p className="text-gray-200 text-xs">Government initiatives executed effectively</p>
+    </div>
+  </div>
+</div>
+
 
         <div className="grid grid-cols-3 gap-8 pt-10">
           <div className="text-center">
@@ -386,15 +398,16 @@ const testimonials = [
         </div>
       </section>
       {/* Process Section (Gov Style with Image Slots) */}
-<section className="relative py-24 bg-gray-50" id="process">
-  {/* Background with Blur */}
+<section className="relative py-24" id="process">
+  {/* Background with Black Overlay */}
   <div className="absolute inset-0">
     <img
       src="/jh-img.jpg" // Use any Jharkhand gov / civic styled background
       alt="Government Background"
-      className="w-full h-full opacity-90 object-cover"
+      className="w-full h-full object-cover"
     />
-    <div className="absolute  w-full h-full object-contain md:object-cover object-center mt-12 opacity-70 inset-0 bg-white/10 "></div>
+    {/* Translucent black layer */}
+    <div className="absolute inset-0 bg-black opacity-60"></div>
   </div>
 
   {/* Content */}
@@ -408,10 +421,9 @@ const testimonials = [
         <div className="flex-1 h-2 bg-[#138808]"></div>
       </div>
 
-      <h2 className="text-4xl   pt-10 md:text-5xl font-bold  text-neutral-700">
-        How Our <span className="text-red-950">AI-Enabled System</span> Works
+      <h2 className="text-4xl pt-10 md:text-5xl font-bold text-white">
+        How Our AI-Enabled System Works
       </h2>
-      
     </div>
 
     {/* Process Steps */}
@@ -446,8 +458,6 @@ const testimonials = [
         </div>
       ))}
     </div>
-
-   
   </div>
 </section>
 
@@ -713,8 +723,7 @@ const testimonials = [
 
 
 
-      
-     <div className="bg-[#dff2f7] py-16 px-6 md:px-16 lg:px-24 relative overflow-hidden">
+   <div className="bg-[#dff2f7] py-16 px-6 md:px-16 lg:px-24 relative overflow-hidden">
   {/* Section Heading */}
   <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-6 relative inline-block">
     About Us
@@ -757,12 +766,22 @@ const testimonials = [
   </div>
 
   {/* Jharkhand Government Branding */}
-  <div className="flex items-center justify-center mt-14">
+  <div className="flex flex-col items-center justify-center mt-14 space-y-4">
     <div className="flex items-center space-x-4 bg-white px-6 py-3 rounded-xl shadow border border-gray-200">
       <img src="/Jharkhand-logo.webp" alt="Jharkhand Logo" className="w-14 h-14" />
       <span className="text-lg font-semibold text-gray-900">
         Government of Jharkhand
       </span>
+    </div>
+
+    {/* Contact Info */}
+    <div className="bg-white px-6 py-4 rounded-xl shadow border border-gray-200 text-center">
+      <p className="text-gray-700 text-base">
+        <span className="font-semibold">Office:</span> 0651-2400240, 2400250 | <span className="font-semibold">Fax:</span> 0651-2400255
+      </p>
+      <p className="text-gray-700 text-base mt-1">
+        <span className="font-semibold">Email:</span> <a href="mailto:cs-jharkhand@nic.in" className="text-green-700 hover:underline">cs-jharkhand@nic.in</a>
+      </p>
     </div>
   </div>
 </div>

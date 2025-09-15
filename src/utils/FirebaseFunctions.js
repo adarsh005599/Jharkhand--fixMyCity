@@ -69,6 +69,20 @@ export const isOfficial = async (userId) => {
     return false;
   }
 };
+export const getUserType = async (userId) => {
+  try {
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (!userDocSnapshot.exists()) return null;
+
+    const userData = userDocSnapshot.data();
+    return userData.type || null;
+  } catch (error) {
+    console.error("Error getting user type:", error);
+    return null;
+  }
+};
 
 /* ----------------------- OFFICIAL LOGIN / FIRST-TIME CREATION ----------------------- */
 // firebaseHelpers.js
@@ -124,6 +138,7 @@ export const handleLoginOrRegisterOfficial = async (formData) => {
   }
 };
 
+
 /* ----------------------- CITIZEN LOGIN ----------------------- */
 export const loginCitizen = async (formData) => {
   try {
@@ -155,6 +170,7 @@ export const loginCitizen = async (formData) => {
   } catch (error) {
     throw new Error(error.message);
   }
+   
 };
 /* ----------------------- COMPLAINTS ----------------------- */
 export const createComplaint = async (formData, media) => {

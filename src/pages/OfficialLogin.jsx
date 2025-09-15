@@ -62,10 +62,14 @@ const OfficialLogin = () => {
   };
 
   return (
-    <div
-      className="h-screen w-screen flex items-center justify-center overflow-y-auto"
-      style={{ backgroundColor: "#eff6ff" }}
-    >
+    <div className="h-screen w-screen flex items-center justify-center overflow-y-auto bg-gradient-to-br from-sky-100 to-blue-50 relative">
+      {/* Pattern Overlay */}
+      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(135deg,#00000011_25%,transparent_25%,transparent_50%,#00000011_50%,#00000011_75%,transparent_75%,transparent)] bg-[length:20px_20px]"></div>
+
+
+
+
+      
       <SpinnerModal visible={spinner} />
 
       <div className="w-[90%] sm:w-[400px] rounded-2xl bg-gradient-to-r from-teal-700/70 to-sky-600/70 shadow-xl p-8 flex flex-col items-center">

@@ -33,7 +33,7 @@ export default function Footer() {
         <ul className="flex gap-5 text-sm font-medium">
           {[
             { name: "Home", path: "/" },
-            { name: "Report Issue", path: "/report" },
+            { name: "Report Issue", path: "/citizen-login" },
             { name: "Track Complaints", path: "/track-complaints" },
             { name: "Citizen Login", path: "/citizen-login" },
             { name: "Official Login", path: "/official-login" },
