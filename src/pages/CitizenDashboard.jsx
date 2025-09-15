@@ -14,10 +14,10 @@ import { isOfficial } from "../utils/FirebaseFunctions";
 
 // Dummy data
 const dummyUsers = [
-  { name: "Ramesh Kumar", gender: "Male", city: "Ranchi", state: "Jharkhand" },
-  { name: "Suresh Singh", gender: "Male", city: "Jamshedpur", state: "Jharkhand" },
-  { name: "Anil Das", gender: "Male", city: "Dhanbad", state: "Jharkhand" },
-  { name: "Priya Kumari", gender: "Female", city: "Bokaro", state: "Jharkhand" },
+  { name: "harsh", gender: "Male", city: "Ranchi", state: "Jharkhand", topic: "Crowd" },
+  { name: "harsh", gender: "Male", city: "Jamshedpur", state: "Jharkhand", topic: "potholes" },
+  { name: "harsh", gender: "Male", city: "Dhanbad", state: "Jharkhand", topic: "traffic" },
+  { name: "harsh", gender: "male", city: "Bokaro", state: "Jharkhand", topic: "streetlight" },
 ];
 
 const CitizenDashboard = () => {
