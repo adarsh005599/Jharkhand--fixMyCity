@@ -323,14 +323,22 @@ const testimonials = [
       <p className="text-gray-200 text-xs">All major cities and districts included</p>
     </div>
   </div>
-
-  <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
-    <Clock className="w-5 h-5 text-yellow-400 mt-1" />
-    <div>
-      <p className="text-white font-semibold text-sm">Real-Time Updates</p>
-      <p className="text-gray-200 text-xs">Track services and reports instantly</p>
-    </div>
+<div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+  <Clock className="w-5 h-5 text-yellow-400 mt-1" />
+  <div>
+    <p className="text-white font-semibold text-sm">Citizen-Centric Services</p>
+    <p className="text-gray-200 text-xs">Simplifying access to government facilities for all residents</p>
   </div>
+</div>
+
+<div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+  <Clock className="w-5 h-5 text-yellow-400 mt-1" />
+  <div>
+    <p className="text-white font-semibold text-sm">Transparent Governance</p>
+    <p className="text-gray-200 text-xs">Ensuring accountability and efficiency across Jharkhand</p>
+  </div>
+</div>
+
 
   <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
     <Star className="w-5 h-5 text-indigo-400 mt-1" />
