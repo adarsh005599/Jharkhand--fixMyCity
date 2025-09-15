@@ -315,9 +315,15 @@ const testimonials = [
           Experience the future of civic engagement through our AI-powered
           platform. Report issues instantly and track resolutions in real-time.
         </p>
-
-
-        <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6">
+  <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
+    <MapPin className="w-5 h-5 text-green-400 mt-1" />
+    <div>
+      <p className="text-white font-semibold text-sm">Coverage Across Jharkhand</p>
+      <p className="text-gray-200 text-xs">All major cities and districts included</p>
+    </div>
+  </div>
+<div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
   <Clock className="w-5 h-5 text-yellow-400 mt-1" />
   <div>
     <p className="text-white font-semibold text-sm">Citizen-Centric Services</p>
@@ -333,13 +339,6 @@ const testimonials = [
   </div>
 </div>
 
-  <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
-    <Clock className="w-5 h-5 text-yellow-400 mt-1" />
-    <div>
-      <p className="text-white font-semibold text-sm">Real-Time Updates</p>
-      <p className="text-gray-200 text-xs">Track services and reports instantly</p>
-    </div>
-  </div>
 
   <div className="inline-flex items-start gap-3 bg-white/10 p-4 rounded-lg shadow-sm max-w-max">
     <Star className="w-5 h-5 text-indigo-400 mt-1" />
@@ -520,7 +519,7 @@ const testimonials = [
 
           {/* Official-style button */}
           <button
-            onClick={() => navigate("/citizen-login")}
+            onClick={() => navigate("/report")}
             className="w-full bg-[#000080] text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-900 transition-colors"
           >
             Report Issue
@@ -685,7 +684,7 @@ const testimonials = [
 
       <div className="flex flex-col sm:flex-row gap-6 justify-center pt-12">
         <button 
-          onClick={() => navigate('/citizen-login')}
+          onClick={() => navigate('/report')}
           className="group bg-gradient-to-r from-blue-600 via-indigo-700 to-blue-800 text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -694,7 +693,7 @@ const testimonials = [
           <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform relative z-10" />
         </button>
 
-        <button onClick={() => navigate('/')}  className="group bg-white/10 backdrop-blur-md text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
+        <button className="group bg-white/10 backdrop-blur-md text-white px-12 py-5 rounded-xl font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center border border-white/30">
           <Eye className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
           Explore Live Dashboard
         </button>
