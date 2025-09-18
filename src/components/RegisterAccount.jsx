@@ -7,6 +7,8 @@ import { registerCitizen } from "../utils/FirebaseFunctions";
 import SpinnerModal from "../components/SpinnerModal";
 import CivicReportingPlatform from "./CivicReportingPlatform";
 import ComradeAIWidget from "../components/ComradeAIWidget";
+import SocketChatWidget from "./SocketChatWidget";
+import Navbar from "./Navbar";
 
 // Styled TextField
 export const TextField = styled(MuiTextField)(() => ({
@@ -15,7 +17,6 @@ export const TextField = styled(MuiTextField)(() => ({
     borderRadius: "12px",
   },
 }));
-
 
 const RegisterAccount = () => {
   const [showForm, setShowForm] = useState(false);
@@ -53,29 +54,16 @@ const RegisterAccount = () => {
   return (
     <div className="h-screen w-screen relative overflow-auto">
       <SpinnerModal visible={spinner} />
+      <Navbar onRegisterClick={() => setShowForm(true)} />
 
       {/* FULLSCREEN BACKGROUND */}
       <div className="absolute inset-0">
         <CivicReportingPlatform />
       </div>
 
-      {/* Centered content */}
-      {!showForm && (
-        <div className="absolute inset-0 flex items-end z-10">
-  <p
-  className="text-base font-semibold text-white px-5 py-2  rounded-xl cursor-pointer 
-             bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
-  onClick={() => setShowForm(true)}
->
-  Register
-</p>
-
-</div>
-      )}
-
+      {/* Registration Modal */}
       {showForm && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] sm:w-[400px] bg-teal-700 backdrop-blur-lg rounded-2xl shadow-xl p-8 flex flex-col items-center z-20">
-          {/* Back link */}
           <p
             className="text-sm text-blue-200 cursor-pointer hover:underline self-start mb-2"
             onClick={() => setShowForm(false)}
@@ -181,8 +169,9 @@ const RegisterAccount = () => {
           </form>
         </div>
       )}
-      {/* <ChatBotWidget/> */}
-      <ComradeAIWidget/>
+
+      <ComradeAIWidget />
+      <SocketChatWidget />
     </div>
   );
 };
