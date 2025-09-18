@@ -11,16 +11,16 @@ import Logo from "/src/assets/logo1.png";
 // Styled gov-like button
 export const Button = styled(MuiButton)(() => ({
   borderRadius: "6px",
-  backgroundColor: "#1f3c88", // deep gov blue
+  backgroundColor: "#1f3c88",
   color: "#fff",
-  fontSize: "0.875rem", // smaller
+  fontSize: "0.875rem",
   padding: "6px 16px",
   fontWeight: 500,
   border: "1px solid transparent",
   textTransform: "none",
   transition: "all 0.2s ease",
   ":hover": {
-    backgroundColor: "#153369", // slightly darker on hover
+    backgroundColor: "#153369",
     textDecoration: "underline",
   },
 }));
@@ -48,9 +48,7 @@ const Navbar = ({ onRegisterClick }) => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -96,7 +94,7 @@ const Navbar = ({ onRegisterClick }) => {
 
         {/* Mobile Menu Icon */}
         <FontAwesomeIcon
-          className="lg:hidden text-white text-xl"
+          className="lg:hidden text-white text-xl z-50"
           icon={Visible ? faClose : faBars}
           onClick={() => setVisible(!Visible)}
         />
@@ -104,21 +102,25 @@ const Navbar = ({ onRegisterClick }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`MenuMobile lg:hidden w-full text-center py-20 absolute bg-gradient-to-b from-black to-sky-200 z-10 cursor-pointer rounded-3xl transition-all duration-500 ${
-          Visible ? "block" : "hidden"
+        className={`MenuMobile lg:hidden fixed inset-0 bg-gradient-to-b from-black to-sky-200 z-40 flex flex-col justify-center items-center transition-all duration-500 ${
+          Visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <ul className="flex flex-col gap-10 font-bold text-lg">
+        <ul className="flex flex-col gap-10 font-bold text-lg text-center">
           {User ? (
             <>
               <Link
                 to={Official ? "/official-dashboard" : "/citizen-dashboard"}
                 className="text-sky-700 hover:text-emerald-700 transition"
+                onClick={() => setVisible(false)}
               >
                 Dashboard
               </Link>
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  setVisible(false);
+                }}
                 className="text-sky-700 hover:text-emerald-700 transition"
               >
                 Logout
@@ -127,7 +129,10 @@ const Navbar = ({ onRegisterClick }) => {
           ) : (
             <>
               <button
-                onClick={onRegisterClick}
+                onClick={() => {
+                  onRegisterClick();
+                  setVisible(false);
+                }}
                 className="text-sky-700 hover:text-emerald-700 transition"
               >
                 Register
@@ -135,12 +140,14 @@ const Navbar = ({ onRegisterClick }) => {
               <Link
                 to={"/citizen-login"}
                 className="text-sky-700 hover:text-emerald-700 transition"
+                onClick={() => setVisible(false)}
               >
                 Citizen Login
               </Link>
               <Link
                 to={"/official-login"}
                 className="text-sky-700 hover:text-emerald-700 transition"
+                onClick={() => setVisible(false)}
               >
                 Official Login
               </Link>
