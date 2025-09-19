@@ -66,7 +66,7 @@ export const isOfficial = async (userId) => {
         // !== for the official login donot login the citizen
         // === for the user one
     const userData = userDocSnapshot.data();
-    return userData.type !== userTypes.official;
+    return userData.type === userTypes.official;
   } catch (error) {
     console.error("Error checking user type:", error);
     return false;
