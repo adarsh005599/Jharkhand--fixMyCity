@@ -63,7 +63,7 @@ export const isOfficial = async (userId) => {
     if (!userDocSnapshot.exists()) return false;
 
     const userData = userDocSnapshot.data();
-    return userData.type === userTypes.official;
+    return userData.type !== userTypes.official;
   } catch (error) {
     console.error("Error checking user type:", error);
     return false;
