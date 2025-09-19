@@ -158,7 +158,7 @@ export const loginCitizen = async (formData) => {
     if (!userDocSnapshot.exists()) {
       await auth.signOut();
       throw new Error("User does not exist in database.");
-    }
+    
 
     const userData = userDocSnapshot.data();
     if (userData.type !== userTypes.citizen) {
