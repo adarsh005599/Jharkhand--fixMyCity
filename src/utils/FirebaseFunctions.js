@@ -35,6 +35,7 @@ export const registerCitizen = async (formData) => {
       formData.email,
       formData.password
     );
+    
     const user = userCredential.user;
 
     await updateProfile(user, { displayName: formData.name });
