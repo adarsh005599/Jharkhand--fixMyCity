@@ -59,12 +59,48 @@ const isOfficial = async (uid) => {
   // A mock function that always returns true for a successful login
   return true;
 };
+// Create exact timestamp for 19 Sept 2025, 2:00 PM
+const fixedDate = new Date();
+fixedDate.setFullYear(2025);   // Year
+fixedDate.setMonth(8);         // Month → 8 = September (0-based)
+fixedDate.setDate(19);         // Day
+fixedDate.setHours(14, 0, 0, 0); // 2:00 PM sharp
+
 const complaintsData = [
-  { id: 1, reason: "Pothole on Main Street", author: "Priya Sharma", location: { name: "Dhanbad, jharkhand" }, timestamp: Date.now() - 864000765, status: Statuses.inProgress },
-  { id: 2, reason: "Damaged public bench", author: "Shaurya singh", location: { name: "Jamshedpur, jharkhand" }, timestamp: Date.now() - 172800000, status: Statuses.solved },
-  { id: 3, reason: "Streetlight not working", author: "Anil Deshmukh", location: { name: "Ranchi, jharkhand" }, timestamp: Date.now() - 259200000, status: Statuses.rejected },
-  { id: 4, reason: "Illegal dumping", author: "Soyam Singh", location: { name: "Bokaro" }, timestamp: Date.now() - 345600000, status: Statuses.inProgress },
-]
+  { 
+    id: 1, 
+    reason: "Pothole on Main Street", 
+    author: "Priya Sharma", 
+    location: { name: "Dhanbad, Jharkhand" }, 
+    timestamp: fixedDate.getTime(),   // ✅ exact 19-09 at 2PM
+    status: Statuses.inProgress 
+  },
+  { 
+    id: 2, 
+    reason: "Damaged public bench", 
+    author: "Shaurya Singh", 
+    location: { name: "Jamshedpur, Jharkhand" }, 
+    timestamp: Date.now() - 172800000, 
+    status: Statuses.solved 
+  },
+  { 
+    id: 3, 
+    reason: "Streetlight not working", 
+    author: "Anil Deshmukh", 
+    location: { name: "Ranchi, Jharkhand" }, 
+    timestamp: Date.now() - 259200000, 
+    status: Statuses.rejected 
+  },
+  { 
+    id: 4, 
+    reason: "Illegal dumping", 
+    author: "Soyam Singh", 
+    location: { name: "Bokaro" }, 
+    timestamp: Date.now() - 345600000, 
+    status: Statuses.inProgress 
+  },
+];
+
 
 const fetchComplaints = (callback) => {
   // Mock a real-time listener by calling the callback immediately with data.
