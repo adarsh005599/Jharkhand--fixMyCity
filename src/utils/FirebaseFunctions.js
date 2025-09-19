@@ -35,7 +35,6 @@ export const registerCitizen = async (formData) => {
       formData.email,
       formData.password
     );
-    
     const user = userCredential.user;
 
     await updateProfile(user, { displayName: formData.name });
@@ -63,6 +62,9 @@ export const isOfficial = async (userId) => {
 
     if (!userDocSnapshot.exists()) return false;
 
+
+        // !== for the official login donot login the citizen
+        // === for the user one
     const userData = userDocSnapshot.data();
     return userData.type !== userTypes.official;
   } catch (error) {
@@ -159,7 +161,7 @@ export const loginCitizen = async (formData) => {
     if (!userDocSnapshot.exists()) {
       await auth.signOut();
       throw new Error("User does not exist in database.");
-    
+    }
 
     const userData = userDocSnapshot.data();
     if (userData.type !== userTypes.citizen) {
