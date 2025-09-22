@@ -2,20 +2,6 @@ import { Dialog, CircularProgress } from "@mui/material";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 
-// The following imports were handled internally to resolve previous compilation errors.
-// import { useNavigate } from "react-router-dom";
-// import ComplaintDetailModal from "./components/ComplaintDetailModal";
-// import SpinnerModal from "./components/SpinnerModal";
-// import { auth } from "./utils/Firebase";
-// import { fetchComplaints, isOfficial } from "./utils/FirebaseFunctions";
-// import { Statuses, statusColors } from "./utils/enums";
-
-// ----------------------------------------------------
-// All necessary components, utilities, and logic are now
-// defined within this single file to resolve import errors.
-// ----------------------------------------------------
-
-// Custom Tailwind-like color palette for a professional, "gov" feel
 const officialPalette = {
   primary: "#1e3a8a", // Dark Blue
   secondary: "#d97706", // Gold/Amber
@@ -46,9 +32,6 @@ const statusColors = {
   solved: "rgb(34 197 94)", // green-500
 };
 
-// Mock Firebase Functions and Data
-// In a real application, you would connect to a live Firebase project.
-// This mock data is for demonstration and to make the app runnable.
 const auth = {
   onAuthStateChanged: (callback) => {
     // Mock user for testing purposes
