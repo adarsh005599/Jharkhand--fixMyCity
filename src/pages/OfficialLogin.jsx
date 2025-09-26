@@ -1,34 +1,27 @@
-import { Button, Checkbox, FormControlLabel } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "../components/RegisterAccount";
-import { auth } from "../utils/Firebase";
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import SpinnerModal from "../components/SpinnerModal";
-import { handleLoginOrRegisterOfficial, isOfficial } from "../utils/FirebaseFunctions";
 import ComradeAIWidget from "../components/ComradeAIWidget";
+import { auth, signOut } from "../utils/Firebase";
+import { handleLoginOrRegisterOfficial, isOfficial } from "../utils/FirebaseFunctions";
 
 const OfficialLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const navigate = useNavigate();
-  const [err, setErr] = useState(""); 
   const [spinner, setSpinner] = useState(false);
+  const [err, setErr] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const navigate = useNavigate();
 
   // Redirect if already logged in as official
   useEffect(() => {
     const checkLoggedIn = async () => {
       const user = auth.currentUser;
       if (user) {
-        try {
-          const officialOrNot = await isOfficial(user.uid);
-          if (officialOrNot) {
-            navigate("/official-dashboard");
-          } else {
-            await auth.signOut(); // not an official, sign out
-          }
-        } catch (error) {
-          console.error("Error checking official:", error);
-        }
+        const officialOrNot = await isOfficial(user.uid);
+        if (officialOrNot) navigate("/official-dashboard");
+        else await signOut(auth);
       }
     };
     checkLoggedIn();
@@ -41,21 +34,18 @@ const OfficialLogin = () => {
     setSuccessMsg("");
 
     try {
-      const user = await handleLoginOrRegisterOfficial(formData);
-
-      // Always redirect if official
-      if (user.official) {
+      const { official, user } = await handleLoginOrRegisterOfficial(formData);
+      if (official) {
         if (user.metadata?.creationTime === user.metadata?.lastSignInTime) {
           setSuccessMsg("New official account created successfully!");
         }
         navigate("/official-dashboard");
       } else {
         setErr("This account is not registered as an official.");
-        await auth.signOut();
+        await signOut(auth);
       }
     } catch (error) {
-      const message = error?.message?.split(": ")[1] || error.message;
-      setErr(message);
+      setErr(error.message);
     } finally {
       setSpinner(false);
     }
