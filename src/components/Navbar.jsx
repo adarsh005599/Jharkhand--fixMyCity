@@ -160,3 +160,4 @@ const Navbar = ({ onRegisterClick }) => {
 };
 
 export default Navbar;
+
