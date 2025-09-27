@@ -9,6 +9,7 @@ import CivicReportingPlatform from "./CivicReportingPlatform";
 import ComradeAIWidget from "../components/ComradeAIWidget";
 import SocketChatWidget from "./SocketChatWidget";
 import Navbar from "./Navbar";
+import { useTranslation } from "react-i18next"; // ✅ import
 
 // Styled TextField
 export const TextField = styled(MuiTextField)(() => ({
@@ -30,6 +31,8 @@ const RegisterAccount = () => {
   const [err, setErr] = useState(null);
   const [spinner, setSpinner] = useState(false);
   const navigate = useNavigate();
+
+  const { t } = useTranslation(); // ✅ use translation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +71,7 @@ const RegisterAccount = () => {
             className="text-sm text-blue-200 cursor-pointer hover:underline self-start mb-2"
             onClick={() => setShowForm(false)}
           >
-            &larr; Back
+            {t("back")}
           </p>
 
           <div className="bg-blue-900 text-white rounded-full w-16 h-16 flex items-center justify-center -mt-4 mb-4">
@@ -88,12 +91,14 @@ const RegisterAccount = () => {
             </svg>
           </div>
 
-          <h2 className="text-xl font-bold text-white mb-6 text-center">Register Account</h2>
+          <h2 className="text-xl font-bold text-white mb-6 text-center">
+            {t("registerAccount")}
+          </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
             <TextField
               variant="outlined"
-              placeholder="Full Name"
+              placeholder={t("fullName")}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
@@ -101,11 +106,10 @@ const RegisterAccount = () => {
               InputProps={{
                 style: { backgroundColor: "#1E2A47", color: "white", borderRadius: "8px" },
               }}
-              InputLabelProps={{ style: { color: "#bbb" } }}
             />
             <TextField
               variant="outlined"
-              placeholder="Email ID"
+              placeholder={t("email")}
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -114,11 +118,10 @@ const RegisterAccount = () => {
               InputProps={{
                 style: { backgroundColor: "#1E2A47", color: "white", borderRadius: "8px" },
               }}
-              InputLabelProps={{ style: { color: "#bbb" } }}
             />
             <TextField
               variant="outlined"
-              placeholder="Phone No."
+              placeholder={t("phone")}
               type="tel"
               value={formData.mobile}
               onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
@@ -127,11 +130,10 @@ const RegisterAccount = () => {
               InputProps={{
                 style: { backgroundColor: "#1E2A47", color: "white", borderRadius: "8px" },
               }}
-              InputLabelProps={{ style: { color: "#bbb" } }}
             />
             <TextField
               variant="outlined"
-              placeholder="Password"
+              placeholder={t("password")}
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -140,11 +142,10 @@ const RegisterAccount = () => {
               InputProps={{
                 style: { backgroundColor: "#1E2A47", color: "white", borderRadius: "8px" },
               }}
-              InputLabelProps={{ style: { color: "#bbb" } }}
             />
             <TextField
               variant="outlined"
-              placeholder="Confirm Password"
+              placeholder={t("confirmPassword")}
               type="password"
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
@@ -153,7 +154,6 @@ const RegisterAccount = () => {
               InputProps={{
                 style: { backgroundColor: "#1E2A47", color: "white", borderRadius: "8px" },
               }}
-              InputLabelProps={{ style: { color: "#bbb" } }}
             />
 
             {err && <p className="text-red-400 text-sm text-center">{err}</p>}
@@ -164,7 +164,7 @@ const RegisterAccount = () => {
               disabled={spinner || !!err}
               className="!bg-blue-700 hover:!bg-blue-800 !rounded-lg !py-3 !font-bold"
             >
-              {spinner ? "REGISTERING..." : "REGISTER"}
+              {spinner ? t("registering") : t("register")}
             </Button>
           </form>
         </div>

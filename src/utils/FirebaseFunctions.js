@@ -132,11 +132,19 @@ export const loginCitizen = async (formData) => {
 };
 
 /* ----------------------- COMPLAINTS ----------------------- */
+const Statuses = {
+  pending: "pending",
+  solved: "solved",
+  rejected: "rejected",
+};
+
 export const createComplaint = async (formData, media) => {
   try {
     let mediaPath = "";
+    const user = auth.currentUser;
+    if (!user) throw new Error("Not logged in");
 
-    // Upload media if exists
+    // ✅ Upload media if exists
     if (media) {
       const data = new FormData();
       data.append("file", media);
@@ -152,22 +160,24 @@ export const createComplaint = async (formData, media) => {
       mediaPath = uploaded.url;
     }
 
-    // Save complaint in Firestore
+    // ✅ Save complaint in Firestore
     const updatedFormData = {
       ...formData,
-      timestamp: Date.now(),
-      mediaPath, // Cloudinary URL or empty string
+      reportedBy: user.uid,         // link complaint to user
+      createdAt: serverTimestamp(), // use Firestore time
+      mediaPath,
       status: Statuses.pending,
     };
 
-    await addDoc(collection(db, "complaints"), updatedFormData);
+    const docRef = await addDoc(collection(db, "complaints"), updatedFormData);
+    console.log("✅ Complaint created with ID:", docRef.id);
+
+    return docRef.id;
   } catch (error) {
-    console.error("Error creating complaint:", error);
+    console.error("❌ Error creating complaint:", error);
     throw new Error(error.message);
   }
 };
-
-
 export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
   const complaintsRef = collection(db, "complaints");
   const q = query(complaintsRef, where("reportedBy", "==", uid));

@@ -11,6 +11,7 @@ import CitizenDashboard from "./pages/CitizenDashboard";
 import OfficialDashboard from "./pages/OfficialDashboard";
 import ReportComplaint from "./pages/ReportComplaint";
 import ReportedComplaints from "./components/ReportedComplaints";
+import './i18n'
 
 const router = createBrowserRouter([
   {
