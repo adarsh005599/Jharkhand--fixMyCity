@@ -2,20 +2,6 @@ import { Dialog, CircularProgress } from "@mui/material";
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 
-// The following imports were handled internally to resolve previous compilation errors.
-// import { useNavigate } from "react-router-dom";
-// import ComplaintDetailModal from "./components/ComplaintDetailModal";
-// import SpinnerModal from "./components/SpinnerModal";
-// import { auth } from "./utils/Firebase";
-// import { fetchComplaints, isOfficial } from "./utils/FirebaseFunctions";
-// import { Statuses, statusColors } from "./utils/enums";
-
-// ----------------------------------------------------
-// All necessary components, utilities, and logic are now
-// defined within this single file to resolve import errors.
-// ----------------------------------------------------
-
-// Custom Tailwind-like color palette for a professional, "gov" feel
 const officialPalette = {
   primary: "#1e3a8a", // Dark Blue
   secondary: "#d97706", // Gold/Amber
@@ -46,9 +32,6 @@ const statusColors = {
   solved: "rgb(34 197 94)", // green-500
 };
 
-// Mock Firebase Functions and Data
-// In a real application, you would connect to a live Firebase project.
-// This mock data is for demonstration and to make the app runnable.
 const auth = {
   onAuthStateChanged: (callback) => {
     // Mock user for testing purposes
@@ -59,12 +42,48 @@ const isOfficial = async (uid) => {
   // A mock function that always returns true for a successful login
   return true;
 };
+// Create exact timestamp for 19 Sept 2025, 2:00 PM
+const fixedDate = new Date();
+fixedDate.setFullYear(2025);   // Year
+fixedDate.setMonth(8);         // Month → 8 = September (0-based)
+fixedDate.setDate(19);         // Day
+fixedDate.setHours(14, 0, 0, 0); // 2:00 PM sharp
+
 const complaintsData = [
-  { id: 1, reason: "Pothole on Main Street", author: "Priya Sharma", location: { name: "Dhanbad, jharkhand" }, timestamp: Date.now() - 864000765, status: Statuses.inProgress },
-  { id: 2, reason: "Damaged public bench", author: "Shaurya singh", location: { name: "Jamshedpur, jharkhand" }, timestamp: Date.now() - 172800000, status: Statuses.solved },
-  { id: 3, reason: "Streetlight not working", author: "Anil Deshmukh", location: { name: "Ranchi, jharkhand" }, timestamp: Date.now() - 259200000, status: Statuses.rejected },
-  { id: 4, reason: "Illegal dumping", author: "Soyam Singh", location: { name: "Bokaro" }, timestamp: Date.now() - 345600000, status: Statuses.inProgress },
-]
+  { 
+    id: 1, 
+    reason: "Pothole on Main Street", 
+    author: "Priya Sharma", 
+    location: { name: "Dhanbad, Jharkhand" }, 
+    timestamp: fixedDate.getTime(),   // ✅ exact 19-09 at 2PM
+    status: Statuses.inProgress 
+  },
+  { 
+    id: 2, 
+    reason: "Damaged public bench", 
+    author: "Shaurya Singh", 
+    location: { name: "Jamshedpur, Jharkhand" }, 
+    timestamp: Date.now() - 172800000, 
+    status: Statuses.solved 
+  },
+  { 
+    id: 3, 
+    reason: "Streetlight not working", 
+    author: "Anil Deshmukh", 
+    location: { name: "Ranchi, Jharkhand" }, 
+    timestamp: Date.now() - 259200000, 
+    status: Statuses.rejected 
+  },
+  { 
+    id: 4, 
+    reason: "Illegal dumping", 
+    author: "Soyam Singh", 
+    location: { name: "Bokaro" }, 
+    timestamp: Date.now() - 345600000, 
+    status: Statuses.inProgress 
+  },
+];
+
 
 const fetchComplaints = (callback) => {
   // Mock a real-time listener by calling the callback immediately with data.

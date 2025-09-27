@@ -8,27 +8,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import DashboardLinkButton from "../components/DashboardLinkButton";
-import SpinnerModal from "../components/SpinnerModal"; 
+import SpinnerModal from "../components/SpinnerModal";
 import { auth } from "../utils/Firebase";
 import { isOfficial } from "../utils/FirebaseFunctions";
-
-// Dummy data
-const dummyUsers = [
-  { name: "harsh", gender: "Male", city: "Ranchi", state: "Jharkhand", topic: "Crowd" },
-  { name: "harsh", gender: "Male", city: "Jamshedpur", state: "Jharkhand", topic: "potholes" },
-  { name: "harsh", gender: "Male", city: "Dhanbad", state: "Jharkhand", topic: "traffic" },
-  { name: "harsh", gender: "male", city: "Bokaro", state: "Jharkhand", topic: "streetlight" },
-];
+import { fetchComplaintsByUser } from "../utils/FirebaseFunctions"; // ✅ your function
 
 const CitizenDashboard = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [SpinnerVisible, setSpinnerVisible] = useState(false);
+  const [complaints, setComplaints] = useState([]); // ✅ state for complaints
   const navigate = useNavigate();
   const [params] = useSearchParams();
 
   useEffect(() => {
     setSpinnerVisible(true);
-    auth.onAuthStateChanged((user) => {
+
+    const unsubscribeAuth = auth.onAuthStateChanged((user) => {
       if (!user) {
         navigate("/citizen-login");
       } else {
@@ -36,7 +31,17 @@ const CitizenDashboard = () => {
           if (res) {
             navigate("/citizen-login");
           } else {
+            // ✅ subscribe to this citizen's complaints
+            const unsubscribeComplaints = fetchComplaintsByUser(
+              user.uid,
+              (complaintsList) => {
+                setComplaints(complaintsList);
+              }
+            );
             setSpinnerVisible(false);
+
+            // cleanup
+            return () => unsubscribeComplaints();
           }
         });
       }
@@ -50,6 +55,7 @@ const CitizenDashboard = () => {
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     return () => {
+      unsubscribeAuth();
       window.removeEventListener(
         "beforeinstallprompt",
         handleBeforeInstallPrompt
@@ -140,7 +146,7 @@ const CitizenDashboard = () => {
           />
           <DashboardLinkButton
             icon={faTrafficLight}
-            name={"Track Reported complaints"}
+            name={"Track Reported Complaints"}
             link={"/track-complaints"}
             className={"lg:hidden"}
           />
@@ -158,7 +164,7 @@ const CitizenDashboard = () => {
           />
         </div>
 
-        {/* Right panel - Reported Complaints / Dummy Users */}
+        {/* Right panel - Reported Complaints */}
         <div
           style={{
             backgroundColor: "#ffffff",
@@ -171,29 +177,35 @@ const CitizenDashboard = () => {
           }}
         >
           <h3 style={{ fontWeight: "bold", marginBottom: "1rem" }}>
-            Active Citizens (Jharkhand)
+            Your Complaints
           </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {dummyUsers.map((user, index) => (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "0.5rem 1rem",
-                  backgroundColor: "#f0f6fa",
-                  borderRadius: "0.5rem",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
-                }}
-              >
-                <span>{user.name}</span>
-                <span>
-                  {user.gender} | {user.city}, {user.state}
-                </span>
-              </div>
-            ))}
-          </div>
+          {complaints.length === 0 ? (
+            <p style={{ color: "#777" }}>No complaints submitted yet.</p>
+          ) : (
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            >
+              {complaints.map((c) => (
+                <div
+                  key={c.id}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "0.5rem 1rem",
+                    backgroundColor: "#f0f6fa",
+                    borderRadius: "0.5rem",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+                  }}
+                >
+                  <span style={{ fontWeight: "bold" }}>{c.topic}</span>
+                  <span>Status: {c.status}</span>
+                  <span style={{ fontSize: "0.8rem", color: "#666" }}>
+                    {new Date(c.timestamp).toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

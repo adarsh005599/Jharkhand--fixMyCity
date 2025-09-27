@@ -7,20 +7,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../utils/Firebase";
 import { isOfficial } from "../utils/FirebaseFunctions";
 import Logo from "/src/assets/logo1.png";
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n'
+
 
 // Styled gov-like button
 export const Button = styled(MuiButton)(() => ({
   borderRadius: "6px",
-  backgroundColor: "#1f3c88", // deep gov blue
+  backgroundColor: "#1f3c88",
   color: "#fff",
-  fontSize: "0.875rem", // smaller
+  fontSize: "0.875rem",
   padding: "6px 16px",
   fontWeight: 500,
   border: "1px solid transparent",
   textTransform: "none",
   transition: "all 0.2s ease",
   ":hover": {
-    backgroundColor: "#153369", // slightly darker on hover
+    backgroundColor: "#153369",
     textDecoration: "underline",
   },
 }));
@@ -31,6 +34,8 @@ const Navbar = ({ onRegisterClick }) => {
   const [Official, setOfficial] = useState(false);
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+  const { t, i18n } = useTranslation(); // ✅ i18next
+  const [lang, setLang] = useState(i18n.language);
 
   const handleLogout = () => {
     auth.signOut();
@@ -48,12 +53,16 @@ const Navbar = ({ onRegisterClick }) => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleLanguage = () => {
+  const newLang = i18n.language === 'en' ? 'hi' : 'en';
+  i18n.changeLanguage(newLang);
+  setLang(newLang); // force re-render
+};
 
   return (
     <>
@@ -73,30 +82,38 @@ const Navbar = ({ onRegisterClick }) => {
 
         {/* Desktop Buttons */}
         {User ? (
-          <div className="ButtonGroup gap-4 hidden lg:flex">
+          <div className="ButtonGroup gap-4 hidden lg:flex items-center">
             <Button
               component={Link}
               to={Official ? "/official-dashboard" : "/citizen-dashboard"}
             >
-              Dashboard
+              {t('dashboard')}
             </Button>
-            <Button onClick={handleLogout}>Logout</Button>
+            <Button onClick={handleLogout}>{t('logout')}</Button>
+            <button
+              onClick={toggleLanguage}
+              className="ml-2 px-2 py-1 bg-white text-blue-700 rounded font-semibold"
+            >
+              {i18n.language === 'en' ? 'हिंदी' : 'English'}
+            </button>
           </div>
         ) : (
-          <div className="ButtonGroup gap-4 hidden lg:flex">
-            <Button onClick={onRegisterClick}>Register</Button>
-            <Button component={Link} to={"/citizen-login"}>
-              Citizen Login
-            </Button>
-            <Button component={Link} to={"/official-login"}>
-              Official Login
-            </Button>
+          <div className="ButtonGroup gap-4 hidden lg:flex items-center">
+            <Button onClick={onRegisterClick}>{t('register')}</Button>
+            <Button component={Link} to={"/citizen-login"}>{t('citizenLogin')}</Button>
+            <Button component={Link} to={"/official-login"}>{t('officialLogin')}</Button>
+            <button
+              onClick={toggleLanguage}
+              className="ml-2 px-2 py-1 bg-white text-blue-700 rounded font-semibold"
+            >
+              {i18n.language === 'en' ? 'हिंदी' : 'English'}
+            </button>
           </div>
         )}
 
         {/* Mobile Menu Icon */}
         <FontAwesomeIcon
-          className="lg:hidden text-white text-xl"
+          className="lg:hidden text-white text-xl z-50"
           icon={Visible ? faClose : faBars}
           onClick={() => setVisible(!Visible)}
         />
@@ -104,46 +121,68 @@ const Navbar = ({ onRegisterClick }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`MenuMobile lg:hidden w-full text-center py-20 absolute bg-gradient-to-b from-black to-sky-200 z-10 cursor-pointer rounded-3xl transition-all duration-500 ${
-          Visible ? "block" : "hidden"
-        }`}
+        className={`MenuMobile lg:hidden fixed inset-0 bg-gradient-to-b from-black to-sky-200 z-40 flex flex-col justify-center items-center transition-all duration-500 ${Visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       >
-        <ul className="flex flex-col gap-10 font-bold text-lg">
+        <ul className="flex flex-col gap-10 font-bold text-lg text-center">
           {User ? (
             <>
               <Link
                 to={Official ? "/official-dashboard" : "/citizen-dashboard"}
                 className="text-sky-700 hover:text-emerald-700 transition"
+                onClick={() => setVisible(false)}
               >
-                Dashboard
+                {t('dashboard')}
               </Link>
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  setVisible(false);
+                }}
                 className="text-sky-700 hover:text-emerald-700 transition"
               >
-                Logout
+                {t('logout')}
+              </button>
+              <button
+                onClick={() => {
+                  toggleLanguage();
+                  setVisible(false);
+                }}
+                className="text-sky-700 hover:text-emerald-700 transition"
+              >
+                {i18n.language === 'en' ? 'हिंदी' : 'English'}
               </button>
             </>
           ) : (
             <>
               <button
-                onClick={onRegisterClick}
+                onClick={() => {
+                  onRegisterClick();
+                  setVisible(false);
+                }}
                 className="text-sky-700 hover:text-emerald-700 transition"
               >
-                Register
+                {t('register')}
               </button>
               <Link
                 to={"/citizen-login"}
                 className="text-sky-700 hover:text-emerald-700 transition"
+                onClick={() => setVisible(false)}
               >
-                Citizen Login
+                {t('citizenLogin')}
               </Link>
               <Link
                 to={"/official-login"}
                 className="text-sky-700 hover:text-emerald-700 transition"
+                onClick={() => setVisible(false)}
               >
-                Official Login
+                {t('officialLogin')}
               </Link>
+               <button
+    onClick={toggleLanguage}
+    className="ml-2 px-2 py-1 bg-white text-blue-700 rounded font-semibold"
+  >
+    {i18n.language === 'en' ? 'हिंदी' : 'English'}
+  </button>
             </>
           )}
         </ul>

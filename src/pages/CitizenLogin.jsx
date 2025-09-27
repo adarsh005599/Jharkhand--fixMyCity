@@ -7,8 +7,11 @@ import SpinnerModal from "../components/SpinnerModal";
 import ComradeAIWidget from "../components/ComradeAIWidget";
 import { auth, db } from "../utils/Firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n"; // import i18n instance
 
 const CitizenLogin = () => {
+  const { t } = useTranslation(); // for translations
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [spinner, setSpinner] = useState(false);
   const [err, setErr] = useState("");
@@ -53,7 +56,7 @@ const CitizenLogin = () => {
         navigate("/citizen-dashboard");
       } else {
         await auth.signOut();
-        setErr("Invalid user type");
+        setErr(t("invalidUserType"));
       }
     } catch (error) {
       const message = error?.message?.split(": ")[1] || error.message;
@@ -61,6 +64,11 @@ const CitizenLogin = () => {
     } finally {
       setSpinner(false);
     }
+  };
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "en" ? "hi" : "en";
+    i18n.changeLanguage(newLang);
   };
 
   return (
@@ -90,13 +98,21 @@ const CitizenLogin = () => {
           </svg>
         </div>
 
-        <h2 className="text-xl font-bold text-white mb-6">Citizen Login</h2>
+        <h2 className="text-xl font-bold text-white mb-6">{t("citizenLogin")}</h2>
+
+        {/* Language Toggle */}
+        <button
+          onClick={toggleLanguage}
+          className="mb-4 px-3 py-1 bg-white text-blue-700 rounded font-semibold"
+        >
+          {i18n.language === "en" ? "हिंदी" : "English"}
+        </button>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
           {/* Email */}
           <TextField
             variant="outlined"
-            placeholder="Email ID"
+            placeholder={t("email")}
             type="email"
             value={formData.email}
             onChange={(e) =>
@@ -119,7 +135,7 @@ const CitizenLogin = () => {
           {/* Password */}
           <TextField
             variant="outlined"
-            placeholder="Password"
+            placeholder={t("password")}
             type="password"
             value={formData.password}
             onChange={(e) =>
@@ -146,10 +162,10 @@ const CitizenLogin = () => {
           <div className="flex items-center justify-between text-sm text-gray-200">
             <FormControlLabel
               control={<Checkbox sx={{ color: "white" }} />}
-              label={<span className="text-gray-200">Remember me</span>}
+              label={<span className="text-gray-200">{t("rememberMe")}</span>}
             />
             <button type="button" className="text-gray-300 hover:underline">
-              Forgot Password?
+              {t("forgotPassword")}
             </button>
           </div>
 
@@ -160,7 +176,7 @@ const CitizenLogin = () => {
             disabled={spinner}
             className="bg-blue-900 hover:!bg-blue-800 !rounded-lg !py-3 !font-bold"
           >
-            LOGIN
+            {t("login")}
           </Button>
         </form>
       </div>

@@ -1,18 +1,8 @@
 // firebaseHelpers.js
 
 import { 
-  doc, 
-  getDoc, 
-  setDoc, 
-  collection,   // ✅ add this
-  addDoc,       // if you use addDoc for complaints
-  onSnapshot,   // if you use real-time listeners
-  query,        // if you use queries
-  where,        // if you use filters
-  getDocs       // if you fetch documents
+  doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, where, getDocs
 } from "firebase/firestore";
-
-
 import { auth, db } from "./Firebase";
 import {
   browserLocalPersistence,
@@ -21,13 +11,10 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-// import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const userTypes = { official: "official", citizen: "citizen" };
 
-/* ----------------------- USER AUTH ----------------------- */
-
-// Citizen registration
+/* ----------------------- CITIZEN REGISTRATION ----------------------- */
 export const registerCitizen = async (formData) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -39,7 +26,6 @@ export const registerCitizen = async (formData) => {
 
     await updateProfile(user, { displayName: formData.name });
 
-    // Save citizen profile in Firestore
     await setDoc(doc(db, "users", user.uid), {
       name: formData.name,
       email: formData.email,
@@ -48,44 +34,36 @@ export const registerCitizen = async (formData) => {
       createdAt: new Date(),
     });
 
-    return user;
+    return { uid: user.uid, email: user.email, type: userTypes.citizen };
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-// Check if a user is official
+/* ----------------------- CHECK USER TYPE ----------------------- */
 export const isOfficial = async (userId) => {
   try {
-    const userDocRef = doc(db, "users", userId);
-    const userDocSnapshot = await getDoc(userDocRef);
-
-    if (!userDocSnapshot.exists()) return false;
-
-    const userData = userDocSnapshot.data();
-    return userData.type !== userTypes.official;
+    const userDoc = await getDoc(doc(db, "users", userId));
+    if (!userDoc.exists()) return false;
+    return userDoc.data().type === userTypes.official;
   } catch (error) {
     console.error("Error checking user type:", error);
     return false;
   }
 };
+
 export const getUserType = async (userId) => {
   try {
-    const userDocRef = doc(db, "users", userId);
-    const userDocSnapshot = await getDoc(userDocRef);
-
-    if (!userDocSnapshot.exists()) return null;
-
-    const userData = userDocSnapshot.data();
-    return userData.type || null;
+    const userDoc = await getDoc(doc(db, "users", userId));
+    if (!userDoc.exists()) return null;
+    return userDoc.data().type || null;
   } catch (error) {
     console.error("Error getting user type:", error);
     return null;
   }
 };
 
-/* ----------------------- OFFICIAL LOGIN / FIRST-TIME CREATION ----------------------- */
-// firebaseHelpers.js
+/* ----------------------- OFFICIAL LOGIN / REGISTRATION ----------------------- */
 export const handleLoginOrRegisterOfficial = async (formData) => {
   try {
     await setPersistence(auth, browserLocalPersistence);
@@ -93,23 +71,18 @@ export const handleLoginOrRegisterOfficial = async (formData) => {
     let userCredential;
 
     try {
-      // Try login first
-      userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
+      // Attempt login
+      userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
     } catch (loginError) {
       if (loginError.code === "auth/user-not-found") {
-        // First-time official registration
+        // First-time official creation
         userCredential = await createUserWithEmailAndPassword(
           auth,
           formData.email,
           formData.password
         );
 
-        const userRef = doc(db, "users", userCredential.user.uid);
-        await setDoc(userRef, {
+        await setDoc(doc(db, "users", userCredential.user.uid), {
           email: formData.email,
           type: userTypes.official,
           createdAt: new Date(),
@@ -126,58 +99,52 @@ export const handleLoginOrRegisterOfficial = async (formData) => {
       throw new Error("This account is not registered as an official.");
     }
 
-    // ✅ return a safe plain object
-    return {
-      uid: user.uid,
-      email: user.email,
-      official,
-      metadata: user.metadata,
-    };
+    return { uid: user.uid, email: user.email, official, metadata: user.metadata };
   } catch (error) {
     throw new Error(error.message);
   }
 };
-
 
 /* ----------------------- CITIZEN LOGIN ----------------------- */
 export const loginCitizen = async (formData) => {
   try {
     await setPersistence(auth, browserLocalPersistence);
 
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      formData.email,
-      formData.password
-    );
-
+    const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
     const user = userCredential.user;
 
-    const userDocRef = doc(db, "users", user.uid);
-    const userDocSnapshot = await getDoc(userDocRef);
-
-    if (!userDocSnapshot.exists()) {
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (!userDoc.exists()) {
       await auth.signOut();
       throw new Error("User does not exist in database.");
     }
 
-    const userData = userDocSnapshot.data();
+    const userData = userDoc.data();
     if (userData.type !== userTypes.citizen) {
       await auth.signOut();
       throw new Error("Not a citizen account.");
     }
 
-    return { ...user, citizen: true };
+    return { uid: user.uid, email: user.email, citizen: true };
   } catch (error) {
     throw new Error(error.message);
   }
-   
 };
+
 /* ----------------------- COMPLAINTS ----------------------- */
+const Statuses = {
+  pending: "pending",
+  solved: "solved",
+  rejected: "rejected",
+};
+
 export const createComplaint = async (formData, media) => {
   try {
     let mediaPath = "";
+    const user = auth.currentUser;
+    if (!user) throw new Error("Not logged in");
 
-    // Upload media if exists
+    // ✅ Upload media if exists
     if (media) {
       const data = new FormData();
       data.append("file", media);
@@ -193,22 +160,24 @@ export const createComplaint = async (formData, media) => {
       mediaPath = uploaded.url;
     }
 
-    // Save complaint in Firestore
+    // ✅ Save complaint in Firestore
     const updatedFormData = {
       ...formData,
-      timestamp: Date.now(),
-      mediaPath, // Cloudinary URL or empty string
+      reportedBy: user.uid,         // link complaint to user
+      createdAt: serverTimestamp(), // use Firestore time
+      mediaPath,
       status: Statuses.pending,
     };
 
-    await addDoc(collection(db, "complaints"), updatedFormData);
+    const docRef = await addDoc(collection(db, "complaints"), updatedFormData);
+    console.log("✅ Complaint created with ID:", docRef.id);
+
+    return docRef.id;
   } catch (error) {
-    console.error("Error creating complaint:", error);
+    console.error("❌ Error creating complaint:", error);
     throw new Error(error.message);
   }
 };
-
-
 export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
   const complaintsRef = collection(db, "complaints");
   const q = query(complaintsRef, where("reportedBy", "==", uid));
