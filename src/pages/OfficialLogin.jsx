@@ -6,8 +6,10 @@ import SpinnerModal from "../components/SpinnerModal";
 import ComradeAIWidget from "../components/ComradeAIWidget";
 import { auth, signOut } from "../utils/Firebase";
 import { handleLoginOrRegisterOfficial, isOfficial } from "../utils/FirebaseFunctions";
+
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n"; // import i18n instance
+
 
 const OfficialLogin = () => {
   const { t } = useTranslation(); 
@@ -44,7 +46,11 @@ const OfficialLogin = () => {
         }
         navigate("/official-dashboard");
       } else {
+
         setErr(t("notRegisteredOfficial"));
+
+        setErr("This account is not registered as an official.");
+
         await signOut(auth);
       }
     } catch (error) {
