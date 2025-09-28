@@ -14,26 +14,6 @@ Features
 
 🔒 Secure Login – Firebase authentication for citizens and officials.
 
-📂 Project Structure
-
-├── fix-my-city/          # Main application code (modules & logic)
-├── functions/            # Firebase Cloud Functions (backend logic & APIs)
-├── public/               # Static assets (images, icons, manifest, etc.)
-├── src/                  # React frontend source code (components, pages, utils)
-│   ├── components/       # Reusable UI components
-│   ├── pages/            # Application pages (Home, Dashboard, Reports, etc.)
-│   ├── context/          # Context providers (Auth, Theme, etc.)
-│   └── App.jsx           # Root application file
-│
-├── firestore.rules        # Firestore database security rules
-├── firestore.indexes.json # Firestore indexing configuration
-├── Footer.jsx             # Footer UI component
-│
-├── tailwind.config.js     # TailwindCSS configuration
-├── vite.config.js         # Vite build & project configuration
-├── package.json           # Dependencies & scripts
-└── README.md              # Project documentation
-
 
 Tech Stack
 
