@@ -10,7 +10,9 @@ Features
 🔒 Secure Login – Firebase authentication for citizens and officials.
 
 ├── fix-my-city        # Core application
+
 ├── functions          # Firebase Cloud Functions
+
 ├── public             # Static assets
 ├── src                # React frontend source code
 ├── firestore.rules    # Firestore security rules
