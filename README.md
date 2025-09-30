@@ -1,4 +1,9 @@
 A civic-tech platform that empowers citizens to report and track city issues such as potholes, streetlights, waste management, water supply, and more — connecting citizens directly with local authorities for faster, transparent, and collaborative problem-solving
+<p align="center">
+  <img src="src/assets/Screenshot%20(77).png" alt="lending Page" width="250"/>
+  <img src="src/assets/Screenshot%20(78).png" alt="login Page" width="250"/>
+  <img src="src/assets/Screenshot%20(79).png" alt="complaints page area" width="250"/>
+</p>
 
 Features
 
