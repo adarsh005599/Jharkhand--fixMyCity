@@ -115,7 +115,7 @@ const OfficialLogin = () => {
           {/* Password */}
           <TextField
             variant="outlined"
-            placeholder={t("password")}
+            placeholder={t("password")} 
             type="password"
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
