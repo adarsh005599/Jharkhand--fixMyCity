@@ -1,7 +1,7 @@
 // firebaseHelpers.js
 
 import { 
-  doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, where, getDocs
+  doc, getDoc, setDoc, collection, addDoc, onSnapshot, query, where, getDocs, updateDoc, serverTimestamp
 } from "firebase/firestore";
 import { auth, db } from "./Firebase";
 import {
@@ -132,10 +132,11 @@ export const loginCitizen = async (formData) => {
 };
 
 /* ----------------------- COMPLAINTS ----------------------- */
-const Statuses = {
+export const Statuses = {
   pending: "pending",
-  solved: "solved",
-  rejected: "rejected",
+  inProgress: "In Progress",
+  solved: "Solved",
+  rejected: "Rejected",
 };
 
 export const createComplaint = async (formData, media) => {
@@ -148,24 +149,33 @@ export const createComplaint = async (formData, media) => {
     if (media) {
       const data = new FormData();
       data.append("file", media);
+      data.append("upload_preset", "fixMyCity_preset");
+      data.append("cloud_name", "dnkuwjegy");
 
-      const res = await fetch("http://localhost:5000/upload", {
-        method: "POST",
-        body: data,
-      });
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dnkuwjegy/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
       const uploaded = await res.json();
-      if (!uploaded.url) throw new Error("Upload to Cloudinary failed");
+      if (!uploaded.secure_url) throw new Error("Upload to Cloudinary failed");
 
-      mediaPath = uploaded.url;
+      mediaPath = uploaded.secure_url;
     }
 
     // ✅ Save complaint in Firestore
     const updatedFormData = {
-      ...formData,
-      reportedBy: user.uid,         // link complaint to user
-      createdAt: serverTimestamp(), // use Firestore time
+      reason: formData.reason,
+      additionalInfo: formData.additionalInfo,
+      location: formData.location,
+      reportedBy: user.uid,
+      createdAt: serverTimestamp(),
+      timestamp: Date.now(),
       mediaPath,
+      mediaType: formData.mediaType || "",
       status: Statuses.pending,
     };
 
@@ -178,6 +188,7 @@ export const createComplaint = async (formData, media) => {
     throw new Error(error.message);
   }
 };
+
 export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
   const complaintsRef = collection(db, "complaints");
   const q = query(complaintsRef, where("reportedBy", "==", uid));
@@ -212,48 +223,69 @@ export const fetchComplaintsByUser = (uid, handleComplaintsUpdate) => {
 export const fetchComplaints = (handleComplaintsUpdate) => {
   const complaintsCollection = collection(db, "complaints");
 
-  return onSnapshot(complaintsCollection, async (complaintsSnapshot) => {
-    const updatedComplaints = [];
+  return onSnapshot(
+    complaintsCollection, 
+    async (complaintsSnapshot) => {
+      try {
+        const updatedComplaints = [];
 
-    for (const complaintDoc of complaintsSnapshot.docs) {
-      const complaintData = complaintDoc.data();
-      const complaintId = complaintDoc.id;
-      const reportedByUserId = complaintData.reportedBy;
+        for (const complaintDoc of complaintsSnapshot.docs) {
+          const complaintData = complaintDoc.data();
+          const complaintId = complaintDoc.id;
+          const reportedByUserId = complaintData.reportedBy;
 
-      // Fetch complaint author details
-      const userDoc = await getDoc(doc(db, "users", reportedByUserId));
-      const userData = userDoc.exists() ? userDoc.data() : { name: "Unknown" };
+          // Fetch complaint author details
+          let userData = { name: "Unknown" };
+          try {
+            const userDoc = await getDoc(doc(db, "users", reportedByUserId));
+            if (userDoc.exists()) {
+              userData = userDoc.data();
+            }
+          } catch (userError) {
+            console.error("Error fetching user:", userError);
+          }
 
-      const complaintWithAuthor = {
-        id: complaintId,
-        author: userData.name,
-        ...complaintData,
-        comments: [],
-      };
+          const complaintWithAuthor = {
+            id: complaintId,
+            author: userData.name,
+            ...complaintData,
+            comments: [],
+          };
 
-      // Subscribe to comments for this complaint
-      const commentsCollection = collection(
-        db,
-        "complaints",
-        complaintId,
-        "comments"
-      );
+          // Fetch comments for this complaint
+          try {
+            const commentsCollection = collection(
+              db,
+              "complaints",
+              complaintId,
+              "comments"
+            );
 
-      onSnapshot(commentsCollection, (commentsSnapshot) => {
-        const comments = commentsSnapshot.docs.map((commentDoc) => ({
-          id: commentDoc.id,
-          ...commentDoc.data(),
-        }));
+            const commentsSnapshot = await getDocs(commentsCollection);
+            const comments = commentsSnapshot.docs.map((commentDoc) => ({
+              id: commentDoc.id,
+              ...commentDoc.data(),
+            }));
 
-        complaintWithAuthor.comments = comments;
-        handleComplaintsUpdate([...updatedComplaints, complaintWithAuthor]);
-      });
+            complaintWithAuthor.comments = comments;
+          } catch (commentError) {
+            console.error("Error fetching comments:", commentError);
+          }
 
-      updatedComplaints.push(complaintWithAuthor);
+          updatedComplaints.push(complaintWithAuthor);
+        }
+
+        handleComplaintsUpdate(updatedComplaints);
+      } catch (error) {
+        console.error("Error processing complaints:", error);
+      }
+    },
+    (error) => {
+      // Error callback for onSnapshot
+      console.error("Firebase listener error:", error);
+      throw error;
     }
-
-    handleComplaintsUpdate(updatedComplaints);
-  });
+  );
 };
 
 /* ----------------------- COMMENTS ----------------------- */
@@ -307,6 +339,15 @@ export const markAsRejected = async (complaintID) => {
   try {
     const complaint = doc(db, "complaints", complaintID);
     await updateDoc(complaint, { status: Statuses.rejected });
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const markAsInProgress = async (complaintID) => {
+  try {
+    const complaint = doc(db, "complaints", complaintID);
+    await updateDoc(complaint, { status: Statuses.inProgress });
   } catch (error) {
     throw new Error(error.message);
   }

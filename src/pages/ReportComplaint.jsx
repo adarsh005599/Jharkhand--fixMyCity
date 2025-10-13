@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Camera, MapPin, Upload, X, CheckCircle, AlertCircle, FileImage, Video, Globe } from 'lucide-react';
-import axios from 'axios';
+import { createComplaint } from '../utils/FirebaseFunctions';
+import { auth } from '../utils/Firebase';
 
 // --- Translation Data ---
 const translations = {
@@ -43,6 +44,7 @@ const translations = {
     submittingBtn: "Submitting Complaint...",
     loaderText: "Wait Adding...",
     errorSubmitFailed: "Failed to submit complaint. Please try again.",
+    errorNotLoggedIn: "Please log in to submit a complaint.",
     successTitle: "Success!",
     successMessage: "Your complaint has been submitted successfully. We'll review it and take appropriate action.",
     redirectingText: "Redirecting you back...",
@@ -86,24 +88,16 @@ const translations = {
     submittingBtn: "शिकायत जमा हो रही है...",
     loaderText: "प्रतीक्षा करें जोड़ रहा है...",
     errorSubmitFailed: "शिकायत जमा करने में विफल रहा। कृपया पुनः प्रयास करें।",
+    errorNotLoggedIn: "शिकायत जमा करने के लिए कृपया लॉग इन करें।",
     successTitle: "सफलता!",
     successMessage: "आपकी शिकायत सफलतापूर्वक जमा कर दी गई है। हम इसकी समीक्षा करेंगे और उचित कार्रवाई करेंगे।",
     redirectingText: "आपको वापस रीडायरेक्ट कर रहा है...",
   }
 };
 
-/**
- * SIMULATED REVERSE GEOCODING FUNCTION
- * * NOTE: In a real-world application, this function must call a dedicated 
- * Geocoding API (e.g., Google Maps Geocoding API, OpenCage, Nominatim) 
- * to convert latitude/longitude into a human-readable City, State name.
- * We are simulating this behavior here since external API keys cannot be used.
- */
 const reverseGeocode = async (lat, lng) => {
-    // Simulate network delay
     await new Promise(r => setTimeout(r, 800)); 
     
-    // Simple simulated logic to return a location string (City, State)
     let city = "New Delhi";
     let state = "Delhi";
 
@@ -122,19 +116,14 @@ const reverseGeocode = async (lat, lng) => {
 };
 
 const ReportComplaint = () => {
-  const [language, setLanguage] = useState('en'); // New state for language
-  const t = translations[language]; // Current translation object
+  const [language, setLanguage] = useState('en');
+  const t = translations[language];
 
   const [media, setMedia] = useState(null);
-  const [mediaPath, setMediaPath] = useState("");
   const [formData, setFormData] = useState({
     location: { name: "", lat: "", lng: "" },
-    mediaPath: "",
     reason: "",
     additionalInfo: "",
-    reportedBy: "",
-    timestamp: "",
-    status: "inProgress",
     mediaType: "",
   });
   const [loaderVisible, setLoaderVisible] = useState(false);
@@ -171,10 +160,10 @@ const ReportComplaint = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFileSelect = async (file) => {
+  const handleFileSelect = (file) => {
     if (!file) return;
 
-    const maxSize = 50 * 1024 * 1024; // 50MB
+    const maxSize = 50 * 1024 * 1024;
     if (file.size > maxSize) {
       setErrors({ ...errors, media: t.errorFileSize });
       return;
@@ -186,51 +175,13 @@ const ReportComplaint = () => {
       return;
     }
 
-    setLoaderVisible(true); 
-
-    try {
-      // NOTE: Cloudinary upload is simulated/handled as per previous logic.
-      const formDataUpload = new FormData();
-      formDataUpload.append("file", file);
-      formDataUpload.append("upload_preset", "fixMyCity_preset"); 
-      formDataUpload.append("cloud_name", "dnkuwjegy");
-
-      const res = await axios.post(
-        `https://api.cloudinary.com/v1_1/dnkuwjegy/upload`,
-        formDataUpload
-      );
-
-      const uploadedUrl = res.data.secure_url;
-
-      setMedia(file);
-      setMediaPath(uploadedUrl); 
-      setFormData({
-        ...formData,
-        mediaType: file.type.split("/")[0],
-        mediaPath: uploadedUrl, 
-      });
-      setErrors({ ...errors, media: null });
-    } catch (err) {
-      console.error("Cloudinary upload failed (Simulated Fallback active):", err);
-      
-      // Fallback: Simulate success for demo purposes
-      const dummyUrl = file.type.startsWith('image/') ? 
-                       URL.createObjectURL(file) : 
-                       'https://placehold.co/400x300/F0F6FA/808080?text=Video+Placeholder';
-
-      setMedia(file);
-      setMediaPath(dummyUrl); 
-      setFormData({
-          ...formData,
-          mediaType: file.type.split("/")[0],
-          mediaPath: dummyUrl, 
-      });
-      setErrors({ ...errors, media: null });
-    } finally {
-      setLoaderVisible(false);
-    }
+    setMedia(file);
+    setFormData({
+      ...formData,
+      mediaType: file.type.split("/")[0],
+    });
+    setErrors({ ...errors, media: null });
   };
-
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -268,15 +219,12 @@ const ReportComplaint = () => {
       });
       
       const { latitude, longitude } = position.coords;
-
-      // 1. Perform reverse geocoding to get City, State name
       const locationName = await reverseGeocode(latitude, longitude); 
       
-      // 2. Update state with the human-readable location name
       setFormData({
         ...formData,
         location: {
-          name: locationName, // Now uses City, State
+          name: locationName,
           lat: latitude.toString(),
           lng: longitude.toString()
         }
@@ -287,20 +235,16 @@ const ReportComplaint = () => {
       let userFacingError = t.errorLocationFailed;
       
       if (error && error.code) {
-          // Improved logging for debugging
           console.error("Geolocation Error Code:", error.code, "Message:", error.message); 
 
-          if (error.code === 1) { // PERMISSION_DENIED
+          if (error.code === 1) {
               userFacingError = t.errorPermissionDenied;
-          } else if (error.code === 3) { // TIMEOUT
+          } else if (error.code === 3) {
               userFacingError = t.errorLocationTimeout;
           } else if (error.message) {
-             // Fallback for other errors with a message
              userFacingError = `Location error: ${error.message}`;
           }
-
       } else {
-          // Fallback log for non-PositionError errors (like the initial 'throw new Error')
           console.error("Geolocation Error Detailed:", error);
       }
 
@@ -313,25 +257,24 @@ const ReportComplaint = () => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
     
+    const user = auth.currentUser;
+    if (!user) {
+      setErrors({submit: t.errorNotLoggedIn});
+      return;
+    }
+    
     setLoaderVisible(true);
     
     try {
-      // Simulate API call to save data 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await createComplaint(formData, media);
       setSubmitSuccess(true);
       
       setTimeout(() => {
-        // Reset form after successful submission
         setMedia(null);
-        setMediaPath("");
         setFormData({
           location: { name: "", lat: "", lng: "" },
-          mediaPath: "",
           reason: "",
           additionalInfo: "",
-          reportedBy: "",
-          timestamp: "",
-          status: "inProgress",
           mediaType: "",
         });
         setTermsAccepted(false);
@@ -339,6 +282,7 @@ const ReportComplaint = () => {
       }, 3000);
       
     } catch (error) {
+      console.error("Error submitting complaint:", error);
       setErrors({submit: t.errorSubmitFailed});
     } finally {
       setLoaderVisible(false);
@@ -367,7 +311,6 @@ const ReportComplaint = () => {
 
   return (
     <div className="min-h-screen bg-[#dff2f7] py-8 px-4 font-[Inter]">
-      {/* Loading Overlay */}
       {loaderVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center shadow-2xl animate-pulse">
@@ -379,7 +322,6 @@ const ReportComplaint = () => {
 
       <div className="max-w-4xl mx-auto">
         
-        {/* Language Toggle Button */}
         <div className="flex justify-end mb-4 pt-4">
             <button
                 onClick={toggleLanguage}
@@ -392,7 +334,6 @@ const ReportComplaint = () => {
             </button>
         </div>
 
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4 animate-pulse">
             {t.headerTitle}
@@ -401,7 +342,6 @@ const ReportComplaint = () => {
         </div>
 
         <div className="space-y-8">
-          {/* Media Upload Section */}
           <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-blue-100 rounded-xl mr-3">
@@ -455,8 +395,7 @@ const ReportComplaint = () => {
                   type="button"
                   onClick={() => {
                     setMedia(null);
-                    setMediaPath("");
-                    setFormData({...formData, mediaType: "", mediaPath: ""});
+                    setFormData({...formData, mediaType: ""});
                   }}
                   className="absolute top-4 right-4 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-all duration-300 z-10 hover:scale-110 shadow-lg"
                 >
@@ -465,14 +404,14 @@ const ReportComplaint = () => {
                 
                 {formData.mediaType === "image" ? (
                   <img
-                    src={mediaPath}
+                    src={URL.createObjectURL(media)}
                     alt="Uploaded evidence"
                     className="w-full h-64 object-contain rounded-xl shadow-lg"
                   />
                 ) : (
                   <video
                     controls
-                    src={mediaPath}
+                    src={URL.createObjectURL(media)}
                     className="w-full h-64 object-contain rounded-xl shadow-lg"
                   />
                 )}
@@ -494,7 +433,6 @@ const ReportComplaint = () => {
             )}
           </div>
 
-          {/* Location Section */}
           <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-green-100 rounded-xl mr-3">
@@ -530,7 +468,6 @@ const ReportComplaint = () => {
             )}
           </div>
 
-          {/* Reason Section */}
           <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-purple-100 rounded-xl mr-3">
@@ -577,7 +514,6 @@ const ReportComplaint = () => {
             )}
           </div>
 
-          {/* Additional Information */}
           <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
               <div className="p-2 bg-orange-100 rounded-xl mr-3">
@@ -610,7 +546,6 @@ const ReportComplaint = () => {
             )}
           </div>
 
-          {/* Terms and Submit */}
           <div className="bg-[#f0f6fa] rounded-3xl shadow-xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-gray-100">
             <label className={`flex items-start space-x-3 cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 hover:shadow-lg
               ${errors.terms ? 'border-red-300 bg-red-50' : termsAccepted ? 'border-green-300 bg-green-50' : 'border-gray-200 hover:bg-gray-50'}`}>
@@ -636,7 +571,7 @@ const ReportComplaint = () => {
               </p>
             )}
 
-            <button
+            <button 
               type="button"
               onClick={handleSubmit}
               disabled={loaderVisible}

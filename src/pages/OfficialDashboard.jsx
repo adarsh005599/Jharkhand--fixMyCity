@@ -1,253 +1,384 @@
-import { Dialog, CircularProgress } from "@mui/material";
-import clsx from "clsx";
+import { faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-
-const officialPalette = {
-  primary: "#1e3a8a", // Dark Blue
-  secondary: "#d97706", // Gold/Amber
-  accent: "#38bdf8", // Sky Blue
-  background: "#f3f4f6", // Light Gray
-  card: "#ffffff", // White
-  text: "#1f2937", // Dark Gray
-};
-
-// Keyframes for a subtle fade-in animation
-const fadeIn = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-`;
-
-// Utility Enums - Recreated from the original file
-const Statuses = {
-  inProgress: "In Progress",
-  rejected: "Rejected",
-  solved: "Solved",
-};
-
-const statusColors = {
-  inProgress: "rgb(234 179 8)", // yellow-600
-  rejected: "rgb(239 68 68)", // red-500
-  solved: "rgb(34 197 94)", // green-500
-};
-
-const auth = {
-  onAuthStateChanged: (callback) => {
-    // Mock user for testing purposes
-    callback({ uid: "mock-official-user" });
-  },
-};
-const isOfficial = async (uid) => {
-  // A mock function that always returns true for a successful login
-  return true;
-};
-// Create exact timestamp for 19 Sept 2025, 2:00 PM
-const fixedDate = new Date();
-fixedDate.setFullYear(2025);   // Year
-fixedDate.setMonth(8);         // Month → 8 = September (0-based)
-fixedDate.setDate(19);         // Day
-fixedDate.setHours(14, 0, 0, 0); // 2:00 PM sharp
-
-const complaintsData = [
-  { 
-    id: 1, 
-    reason: "Pothole on Main Street", 
-    author: "Priya Sharma", 
-    location: { name: "Dhanbad, Jharkhand" }, 
-    timestamp: fixedDate.getTime(),   // ✅ exact 19-09 at 2PM
-    status: Statuses.inProgress 
-  },
-  { 
-    id: 2, 
-    reason: "Damaged public bench", 
-    author: "Shaurya Singh", 
-    location: { name: "Jamshedpur, Jharkhand" }, 
-    timestamp: Date.now() - 172800000, 
-    status: Statuses.solved 
-  },
-  { 
-    id: 3, 
-    reason: "Streetlight not working", 
-    author: "Anil Deshmukh", 
-    location: { name: "Ranchi, Jharkhand" }, 
-    timestamp: Date.now() - 259200000, 
-    status: Statuses.rejected 
-  },
-  { 
-    id: 4, 
-    reason: "Illegal dumping", 
-    author: "Soyam Singh", 
-    location: { name: "Bokaro" }, 
-    timestamp: Date.now() - 345600000, 
-    status: Statuses.inProgress 
-  },
-];
-
-
-const fetchComplaints = (callback) => {
-  // Mock a real-time listener by calling the callback immediately with data.
-  callback(complaintsData);
-  return () => {}; // Return a mock unsubscribe function
-};
-
-// Component for a simple loading spinner modal
-const SpinnerModal = ({ visible }) => (
-  <Dialog open={visible}>
-    <div className="p-8 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg">
-      <CircularProgress />
-      <p className="mt-4 text-gray-700">Loading...</p>
-    </div>
-  </Dialog>
-);
-
-// Component for the complaint detail modal
-const ComplaintDetailModal = ({ setDialogOpen, complaint }) => {
-  return (
-    <div className="p-6 bg-white rounded-lg shadow-xl max-w-lg mx-auto">
-      <h3 className="text-xl font-bold mb-4">Complaint Details</h3>
-      <p><strong>Reason:</strong> {complaint.reason}</p>
-      <p><strong>Reported By:</strong> {complaint.author}</p>
-      <p><strong>Location:</strong> {complaint.location?.name}</p>
-      <p><strong>Date & Time:</strong> {new Date(complaint.timestamp).toLocaleString()}</p>
-      <p><strong>Status:</strong> {complaint.status}</p>
-      <button
-        onClick={() => setDialogOpen(false)}
-        className="mt-6 w-full py-2 px-4 bg-red-600 text-white font-bold rounded-md hover:bg-red-700 transition-colors duration-200"
-      >
-        Close
-      </button>
-    </div>
-  );
-};
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import SpinnerModal from "../components/SpinnerModal";
+import { auth } from "../utils/Firebase";
+import { isOfficial, fetchComplaints, Statuses } from "../utils/FirebaseFunctions";
 
 const OfficialDashboard = () => {
-  const [Complaints, setComplaints] = useState([]);
-  const [ModalOpen, setModalOpen] = useState(false);
-  const [complaint, setComplaint] = useState({});
-  const [SpinnerVisible, setSpinnerVisible] = useState(false);
-  // Replaced `useNavigate` as it's part of a router setup.
-  const navigate = (path) => console.log(`Navigating to ${path}`);
+  const [spinnerVisible, setSpinnerVisible] = useState(true);
+  const [complaints, setComplaints] = useState([]);
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setSpinnerVisible(true);
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        navigate("/official-login");
-      } else {
-        isOfficial(user.uid).then((res) => {
-          if (!res) {
+    let unsubscribeComplaints = null;
+    let unsubscribeAuth = null;
+
+    const initializeDashboard = async () => {
+      unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          navigate("/official-login");
+          return;
+        }
+
+        try {
+          const official = await isOfficial(user.uid);
+          if (!official) {
+            toast.error("Not authorized as official");
+            await auth.signOut();
             navigate("/official-login");
-          } else {
+            return;
+          }
+
+          // Subscribe to all complaints with error handling
+          try {
+            unsubscribeComplaints = fetchComplaints((complaintsList) => {
+              setComplaints(complaintsList);
+              setSpinnerVisible(false);
+            });
+          } catch (fetchError) {
+            console.error("Error fetching complaints:", fetchError);
+            toast.error("Permission denied. Please check Firestore rules.");
             setSpinnerVisible(false);
           }
-        });
-      }
-    });
+        } catch (error) {
+          console.error("Error checking authorization:", error);
+          toast.error("Error loading dashboard: " + error.message);
+          setSpinnerVisible(false);
+        }
+      });
+    };
 
-    const unsubscribe = fetchComplaints(handleComplaintsUpdate);
-    return () => unsubscribe(); // cleanup listener
-  }, []);
+    initializeDashboard();
 
-  const handleComplaintsUpdate = (updatedComplaints) => {
-    setComplaints(updatedComplaints);
+    return () => {
+      if (unsubscribeAuth) unsubscribeAuth();
+      if (unsubscribeComplaints) unsubscribeComplaints();
+    };
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    await auth.signOut();
+    navigate("/official-login");
   };
 
-  // columns configuration is now for a standard table header
-  let columns = [
-    { headerName: "Complaint Reason", field: "reason", width: "w-2/6" },
-    { headerName: "Reported By", field: "author", width: "w-1/6" },
-    { headerName: "Reported Location", field: "location", width: "w-1/6" },
-    { headerName: "Reported Date & Time", field: "timestamp", width: "w-1/6" },
-    { headerName: "Status", field: "status", width: "w-1/6" },
-  ];
+  const getStatusColor = (status) => {
+    switch (status) {
+      case Statuses.pending:
+        return "#fbbf24"; // yellow
+      case Statuses.inProgress:
+        return "#3b82f6"; // blue
+      case Statuses.solved:
+        return "#10b981"; // green
+      case Statuses.rejected:
+        return "#ef4444"; // red
+      default:
+        return "#6b7280"; // gray
+    }
+  };
+
+  const getStatusBadgeStyle = (status) => ({
+    display: "inline-block",
+    padding: "0.25rem 0.75rem",
+    borderRadius: "9999px",
+    fontSize: "0.75rem",
+    fontWeight: "600",
+    backgroundColor: getStatusColor(status),
+    color: "white",
+  });
 
   return (
-    <>
-      <style>{fadeIn}</style>
-      <SpinnerModal visible={SpinnerVisible} />
-      <div className={`min-h-screen bg-[#dff2f7] text-slate-800 p-4 sm:p-8 md:p-12 lg:p-16`}>
-        <header className="flex items-center justify-center lg:justify-start gap-4 mb-8 lg:mb-12 animate-fadeIn">
-          {/* Simple SVG icon for a "seal" feel */}
-          <svg className="h-10 w-10 text-sky-700 md:h-14 md:w-14" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fillRule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8a1 1 0 112 0 1 1 0 01-2 0zm-3 0a1 1 0 112 0 1 1 0 01-2 0zm6 0a1 1 0 112 0 1 1 0 01-2 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <h2
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-center lg:text-left text-slate-900 transition-colors duration-500 hover:text-sky-700"
-            style={{ animation: 'fadeIn 0.5s ease-in-out' }}
-          >
-            Official Dashboard
-          </h2>
-        </header>
+    <div
+      style={{
+        backgroundColor: "#dff2f7",
+        minHeight: "100vh",
+        padding: "2rem",
+      }}
+    >
+      <SpinnerModal visible={spinnerVisible} />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
 
-        <Dialog
-          open={ModalOpen}
-          onClose={() => setModalOpen(false)}
-          aria-labelledby="complaint-detail-modal"
+      {/* Header */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "2rem",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "2rem",
+            fontWeight: "bold",
+            color: "#1e40af",
+          }}
         >
-          <ComplaintDetailModal
-            setDialogOpen={setModalOpen}
-            complaint={complaint}
-          />
-        </Dialog>
+          Official Dashboard
+        </h1>
+        <button
+          onClick={handleLogout}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            padding: "0.75rem 1.5rem",
+            backgroundColor: "#ef4444",
+            color: "white",
+            border: "none",
+            borderRadius: "0.5rem",
+            fontWeight: "600",
+            cursor: "pointer",
+          }}
+        >
+          <FontAwesomeIcon icon={faSignOut} />
+          Logout
+        </button>
+      </div>
 
-        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg transition-transform duration-500 hover:scale-[1.005]">
-          <table className="w-full text-left table-auto border-collapse">
-            <thead>
-              <tr className="bg-blue-900 text-white font-bold uppercase text-sm">
-                <th className="p-4 rounded-tl-xl">Complaint Reason</th>
-                <th className="p-4">Reported By</th>
-                <th className="p-4">Reported Location</th>
-                <th className="p-4">Reported Date & Time</th>
-                <th className="p-4 rounded-tr-xl text-center">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Complaints.map((row) => (
-                <tr
-                  key={row.id}
-                  className="bg-white border-b border-gray-200 transition-colors duration-200 hover:bg-sky-50 cursor-pointer"
-                  onClick={() => {
-                    setComplaint(row);
-                    setModalOpen(true);
-                  }}
-                >
-                  <td className="p-4">{row.reason}</td>
-                  <td className="p-4">{row.author}</td>
-                  <td className="p-4">{row.location?.name}</td>
-                  <td className="p-4">
-                    {new Date(row.timestamp).toLocaleDateString()} ,{" "}
-                    {new Date(row.timestamp).toLocaleTimeString("en-US", {
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
-                  </td>
-                  <td className="p-4 text-center">
-                    <span
-                      className={clsx(
-                        "StatusCol inline-block px-4 py-1 text-xs font-semibold rounded-full text-white",
-                        {
-                          "bg-yellow-600": row.status === Statuses.inProgress,
-                          "bg-red-500": row.status === Statuses.rejected,
-                          "bg-green-500": row.status === Statuses.solved,
-                        }
-                      )}
-                    >
-                      {row.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Stats Cards */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "1rem",
+          marginBottom: "2rem",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "white",
+            padding: "1.5rem",
+            borderRadius: "0.75rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <h3 style={{ fontSize: "0.875rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+            Total Complaints
+          </h3>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "#1e40af" }}>
+            {complaints.length}
+          </p>
+        </div>
+        <div
+          style={{
+            backgroundColor: "white",
+            padding: "1.5rem",
+            borderRadius: "0.75rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <h3 style={{ fontSize: "0.875rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+            Pending
+          </h3>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "#fbbf24" }}>
+            {complaints.filter((c) => c.status === Statuses.pending).length}
+          </p>
+        </div>
+        <div
+          style={{
+            backgroundColor: "white",
+            padding: "1.5rem",
+            borderRadius: "0.75rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <h3 style={{ fontSize: "0.875rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+            In Progress
+          </h3>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }}>
+            {complaints.filter((c) => c.status === Statuses.inProgress).length}
+          </p>
+        </div>
+        <div
+          style={{
+            backgroundColor: "white",
+            padding: "1.5rem",
+            borderRadius: "0.75rem",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          }}
+        >
+          <h3 style={{ fontSize: "0.875rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+            Solved
+          </h3>
+          <p style={{ fontSize: "2rem", fontWeight: "bold", color: "#10b981" }}>
+            {complaints.filter((c) => c.status === Statuses.solved).length}
+          </p>
         </div>
       </div>
-    </>
+
+      {/* Complaints List */}
+      <div
+        style={{
+          backgroundColor: "white",
+          borderRadius: "0.75rem",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          padding: "1.5rem",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+            marginBottom: "1.5rem",
+            color: "#1e40af",
+          }}
+        >
+          All Complaints
+        </h2>
+
+        {complaints.length === 0 ? (
+          <p style={{ color: "#6b7280", textAlign: "center", padding: "2rem" }}>
+            No complaints found
+          </p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {complaints.map((complaint) => (
+              <div
+                key={complaint.id}
+                onClick={() => setSelectedComplaint(complaint)}
+                style={{
+                  padding: "1rem",
+                  backgroundColor: "#f9fafb",
+                  borderRadius: "0.5rem",
+                  border: "1px solid #e5e7eb",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#f3f4f6";
+                  e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "#f9fafb";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontWeight: "bold", fontSize: "1.1rem", marginBottom: "0.25rem" }}>
+                      {complaint.reason}
+                    </h3>
+                    <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+                      Reported by: {complaint.author || "Unknown"}
+                    </p>
+                  </div>
+                  <span style={getStatusBadgeStyle(complaint.status)}>
+                    {complaint.status}
+                  </span>
+                </div>
+                <p style={{ fontSize: "0.875rem", color: "#374151", marginBottom: "0.5rem" }}>
+                  {complaint.additionalInfo}
+                </p>
+                <div style={{ fontSize: "0.75rem", color: "#9ca3af" }}>
+                  <span>📍 {typeof complaint.location === 'object' ? complaint.location.name || 'Unknown Location' : complaint.location || 'Unknown Location'}</span>
+                  <span style={{ marginLeft: "1rem" }}>
+                    🕐 {complaint.timestamp ? new Date(complaint.timestamp).toLocaleString() : "N/A"}
+                  </span>
+                </div>
+                {complaint.comments && complaint.comments.length > 0 && (
+                  <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: "#6b7280" }}>
+                    💬 {complaint.comments.length} comment(s)
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Complaint Detail Modal */}
+      {selectedComplaint && (
+        <div
+          onClick={() => setSelectedComplaint(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: "white",
+              borderRadius: "0.75rem",
+              padding: "2rem",
+              maxWidth: "600px",
+              width: "90%",
+              maxHeight: "80vh",
+              overflow: "auto",
+            }}
+          >
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}>
+              {selectedComplaint.reason}
+            </h2>
+            <div style={{ marginBottom: "1rem" }}>
+              <span style={getStatusBadgeStyle(selectedComplaint.status)}>
+                {selectedComplaint.status}
+              </span>
+            </div>
+            <p style={{ marginBottom: "1rem" }}>{selectedComplaint.additionalInfo}</p>
+            <p style={{ fontSize: "0.875rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+              📍 Location: {typeof selectedComplaint.location === 'object' 
+                ? selectedComplaint.location.name || 'Unknown Location' 
+                : selectedComplaint.location || 'Unknown Location'}
+            </p>
+            <p style={{ fontSize: "0.875rem", color: "#6b7280", marginBottom: "1rem" }}>
+              👤 Reported by: {selectedComplaint.author}
+            </p>
+            {selectedComplaint.mediaPath && (
+              <img
+                src={selectedComplaint.mediaPath}
+                alt="Complaint"
+                style={{ width: "100%", borderRadius: "0.5rem", marginBottom: "1rem" }}
+              />
+            )}
+            <button
+              onClick={() => setSelectedComplaint(null)}
+              style={{
+                padding: "0.75rem 1.5rem",
+                backgroundColor: "#3b82f6",
+                color: "white",
+                border: "none",
+                borderRadius: "0.5rem",
+                fontWeight: "600",
+                cursor: "pointer",
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
