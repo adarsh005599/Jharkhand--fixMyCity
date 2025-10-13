@@ -4,12 +4,11 @@ import { TextField } from "../components/RegisterAccount";
 import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import SpinnerModal from "../components/SpinnerModal";
 import ComradeAIWidget from "../components/ComradeAIWidget";
-import { auth, signOut } from "../utils/Firebase";
+import { auth } from "../utils/Firebase";
 import { handleLoginOrRegisterOfficial, isOfficial } from "../utils/FirebaseFunctions";
 
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n"; // import i18n instance
-
 
 const OfficialLogin = () => {
   const { t } = useTranslation(); 
@@ -26,7 +25,6 @@ const OfficialLogin = () => {
       if (user) {
         const officialOrNot = await isOfficial(user.uid);
         if (officialOrNot) navigate("/official-dashboard");
-        else await signOut(auth);
       }
     };
     checkLoggedIn();
@@ -39,18 +37,17 @@ const OfficialLogin = () => {
     setSuccessMsg("");
 
     try {
-      const { official, user } = await handleLoginOrRegisterOfficial(formData);
-      if (official) {
-        if (user.metadata?.creationTime === user.metadata?.lastSignInTime) {
+      const result = await handleLoginOrRegisterOfficial(formData);
+      if (result.official) {
+        // Check if this is a new account by comparing metadata timestamps
+        const { creationTime, lastSignInTime } = result.metadata || {};
+        if (creationTime && lastSignInTime && creationTime === lastSignInTime) {
           setSuccessMsg(t("newOfficialCreated"));
         }
         navigate("/official-dashboard");
       } else {
 
         setErr(t("notRegisteredOfficial"));
-
-        setErr("This account is not registered as an official.");
-
         await signOut(auth);
       }
     } catch (error) {
