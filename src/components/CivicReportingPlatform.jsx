@@ -1476,6 +1476,7 @@ const testimonials = [
           >
             {t("Report Issue")}
           </button>
+          
         </div>
       ))}
     </div>
@@ -1523,6 +1524,7 @@ const testimonials = [
             </p>
           </div>
         </div>
+  
       ))}
     </div>
   </div>
@@ -1738,6 +1740,8 @@ const testimonials = [
   </div>
 </div>
 
+
+      
 
     </div>
   );

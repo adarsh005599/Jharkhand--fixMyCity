@@ -121,7 +121,12 @@ const Navbar = ({ onRegisterClick }) => {
 
       {/* Mobile Menu */}
       <div
+
         className={`MenuMobile lg:hidden fixed inset-0 bg-gradient-to-b from-black to-sky-200 z-40 flex flex-col justify-center items-center transition-all duration-500 ${Visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        className={`MenuMobile lg:hidden fixed inset-0 bg-gradient-to-b from-black to-sky-200 z-40 flex flex-col justify-center items-center transition-all duration-500 ${
+          Visible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+
       >
         <ul className="flex flex-col gap-10 font-bold text-lg text-center">
           {User ? (
@@ -138,6 +143,7 @@ const Navbar = ({ onRegisterClick }) => {
                   handleLogout();
                   setVisible(false);
                 }}
+
                 className="text-sky-700 hover:text-emerald-700 transition"
               >
                 {t('logout')}
@@ -147,6 +153,7 @@ const Navbar = ({ onRegisterClick }) => {
                   toggleLanguage();
                   setVisible(false);
                 }}
+
                 className="text-sky-700 hover:text-emerald-700 transition"
               >
                 {i18n.language === 'en' ? 'हिंदी' : 'English'}
@@ -192,3 +199,4 @@ const Navbar = ({ onRegisterClick }) => {
 };
 
 export default Navbar;
+
