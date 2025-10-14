@@ -105,6 +105,7 @@ const CitizenDashboard = () => {
       />
 
       <h2
+        
         style={{
           marginBottom: "2rem",
           fontWeight: "bold",
