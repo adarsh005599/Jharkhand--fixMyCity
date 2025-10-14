@@ -95,7 +95,7 @@ const OfficialDashboard = () => {
       style={{
         backgroundColor: "#dff2f7",
         minHeight: "100vh",
-        padding: "2rem",
+        padding: "90px",
       }}
     >
       <SpinnerModal visible={spinnerVisible} />
