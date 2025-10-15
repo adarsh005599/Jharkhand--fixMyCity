@@ -33,7 +33,7 @@ Authentication: Firebase Auth
 
 Hosting: Firebase Hosting || vercel || render
 
-git clone https://github.com/adarsh005599/jharkhand--fixMyCity.git
+git clone https://github.com/adarsh005599/jharkhand--fixMyCity.git  //dont copy... build yourself 
 cd fix-my-city
 
 npm install
