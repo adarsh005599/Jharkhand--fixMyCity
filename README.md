@@ -5,7 +5,6 @@ A civic-tech platform that empowers citizens to report and track city issues suc
   <img src="src/assets/Screenshot%20(79).png" alt="complaints page area" width="250"/>
   
 </p>
-
 Features
 
 📌 Easy Complaint Reporting – Citizens can upload photos/videos with geolocation.
