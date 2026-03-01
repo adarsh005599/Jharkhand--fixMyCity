@@ -8,7 +8,6 @@ A civic-tech platform that empowers citizens to report and track city issues suc
 
 Features
 
-
 📌 Easy Complaint Reporting – Citizens can upload photos/videos with geolocation.
 
 🗂️ Complaint Tracking – Track issue status from submission to resolution.
