@@ -20,7 +20,6 @@ Features
 
 🔒 Secure Login – Firebase authentication for citizens and officials.
 
-
 Tech Stack
 
 Frontend: React + Vite + TailwindCSS
